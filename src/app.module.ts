@@ -7,13 +7,14 @@ import { CustomerModule } from './app/customer/customer.module';
 import { OrdersModule } from './app/orders/orders.module';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './app/common/config/config';
+import { DatabaseModule } from './app/database/database.module';
 
 
 @Module({
   imports: [AuthModule, ProductModule, CustomerModule, OrdersModule, ConfigModule.forRoot({
     load: [configuration],
     isGlobal: true
-  })],
+  }),DatabaseModule],
   controllers: [AppController],
   providers: [AppService],
 })
