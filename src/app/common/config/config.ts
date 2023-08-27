@@ -3,4 +3,4 @@ export default () => ({
     JWT_SECRET: 'SECRET_TOKEN',
     JWT_EXPIRES:'',
     POSTGRES_URL:''
-})
+})   
