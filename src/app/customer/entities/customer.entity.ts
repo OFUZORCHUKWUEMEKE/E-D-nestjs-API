@@ -1,7 +1,7 @@
 import { BaseEntity } from "src/app/common/core/entity/base.entity";
 import { CustomerType, DailyLimit, SubscriptionType } from "src/app/common/dto/common-dto";
 import { Order } from "src/app/orders/entities/order.entity";
-import { Entity, Column,OneToMany } from "typeorm";
+import { Entity, Column, OneToMany } from "typeorm";
 
 @Entity('customer')
 export class Customer extends BaseEntity {
@@ -21,19 +21,22 @@ export class Customer extends BaseEntity {
     @Column()
     password: string
 
+    @Column()
+    profilepicture: string
+
     @Column({ enum: DailyLimit, default: DailyLimit.BASIC })
     dailylimit: DailyLimit
 
-    @Column({ default: CustomerType.REGULAR ,enum:CustomerType})
+    @Column({ default: CustomerType.REGULAR, enum: CustomerType })
     customertype: CustomerType
 
     @Column()
-    token:string
+    token: string
 
-    @Column({enum:SubscriptionType,default:SubscriptionType.BASIC})
-    subscription:SubscriptionType
+    @Column({ enum: SubscriptionType, default: SubscriptionType.BASIC })
+    subscription: SubscriptionType
 
-    @OneToMany(()=>Order,(order)=>order.customer)
-    order:Order[]
-    
+    @OneToMany(() => Order, (order) => order.customer)
+    order: Order[]
+
 }
