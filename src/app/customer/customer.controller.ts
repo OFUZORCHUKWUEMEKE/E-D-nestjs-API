@@ -1,14 +1,16 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { CustomerService } from './customer.service';
-import { CreateCustomerDto } from './dto/create-customer.dto';
+import { CreateCustomer } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('customers')
 @Controller('customer')
 export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
   @Post()
-  create(@Body() createCustomerDto: CreateCustomerDto) {
+  create(@Body() createCustomerDto: CreateCustomer) {
     return this.customerService.create(createCustomerDto);
   }
 

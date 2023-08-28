@@ -8,14 +8,17 @@ import { OrdersModule } from './app/orders/orders.module';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './app/common/config/config';
 import { DatabaseModule } from './app/database/database.module';
+import { CartService } from './app/cart/cart.service';
+import { CartModule } from './app/cart/cart.module';
+import { CouponModule } from './app/coupon/coupon.module';
 
 
 @Module({
   imports: [AuthModule, ProductModule, CustomerModule, OrdersModule, ConfigModule.forRoot({
     load: [configuration],
     isGlobal: true
-  }),DatabaseModule],
+  }),DatabaseModule, CartModule, CouponModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, CartService],
 })
 export class AppModule { }

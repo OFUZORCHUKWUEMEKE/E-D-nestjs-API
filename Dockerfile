@@ -10,5 +10,5 @@ COPY . .
 
 EXPOSE 4000  
 
-# RUN ["npm","run", "start:dev"]
+RUN ["npm","run", "start:dev"]
 
