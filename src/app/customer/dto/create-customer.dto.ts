@@ -34,4 +34,8 @@ export class CreateCustomer {
     @IsNotEmpty()
     @IsString()
     email: string
+
+
+    @ApiPropertyOptional()
+    profilepicture: Express.Multer.File
 }

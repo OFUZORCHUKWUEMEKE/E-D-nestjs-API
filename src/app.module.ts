@@ -11,13 +11,16 @@ import { DatabaseModule } from './app/database/database.module';
 import { CartService } from './app/cart/cart.service';
 import { CartModule } from './app/cart/cart.module';
 import { CouponModule } from './app/coupon/coupon.module';
+import { CloudinaryModule } from './app/cloudinary/cloudinary.module';
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { DbOptions } from './app/common/utils/constants';
 
 
 @Module({
   imports: [AuthModule, ProductModule, CustomerModule, OrdersModule, ConfigModule.forRoot({
     load: [configuration],
     isGlobal: true
-  }),DatabaseModule, CartModule, CouponModule],
+  }), TypeOrmModule.forRoot(DbOptions), CartModule, CouponModule, CloudinaryModule],
   controllers: [AppController],
   providers: [AppService, CartService],
 })
