@@ -16,15 +16,12 @@ export class AuthService {
                 const image_url = await this.cloudinaryService.uploadImage(body.profilepicture)
                 body.profilepicture = image_url.url
             }
-            for (const [key, value] of Object.entries(body)) {
-                body[key] = value;
-            }
             const saved = await this.customerRepository.create(body)
-
             return saved
 
         } catch (error) {
-            throw new HttpException(error, 404)
+            console.log(error)
+            throw new HttpException(error.response, 400)
         }
     }
 

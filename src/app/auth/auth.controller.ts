@@ -11,16 +11,16 @@ import {DeepPartial} from 'typeorm'
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-    constructor(private readonly authService: AuthService) { }
+    constructor(private readonly authService: AuthService) {}
 
-    @Post()
+    @Post('/signup')
     @HttpCode(HttpStatus.CREATED)
     @UseInterceptors(FileInterceptor('file'))
     async SignUp(@Body() payload:DeepPartial<Customer>, @UploadedFile() file: Express.Multer.File) {
         return await this.authService.SignUp(payload)
     }
 
-    @Post()
+    @Post('/login')
     async Login(@Body() body: Ilogin) {
         return await this.authService
     }

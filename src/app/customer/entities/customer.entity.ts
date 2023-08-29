@@ -1,18 +1,20 @@
 import { BaseEntity } from "src/app/common/core/entity/base.entity";
 import { CustomerType, DailyLimit, SubscriptionType } from "src/app/common/dto/common-dto";
 import { Order } from "src/app/orders/entities/order.entity";
-import { Entity, Column, OneToMany } from "typeorm";
+import { Entity, Column, OneToMany, Index } from "typeorm";
 
 @Entity('customer')
 export class Customer extends BaseEntity {
 
-    @Column()
+    @Index()
+    @Column({ nullable: false })
     firstname: string
 
-    @Column()
+    @Column({ nullable: false })
     lastname: string
 
-    @Column({ unique: true })
+    @Index()
+    @Column({ unique: true, nullable: false })
     businessname: string
 
     @Column({ unique: true })
