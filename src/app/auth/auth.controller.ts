@@ -16,13 +16,13 @@ export class AuthController {
     @Post('/signup')
     @HttpCode(HttpStatus.CREATED)
     @UseInterceptors(FileInterceptor('file'))
-    async SignUp(@Body() payload:DeepPartial<Customer>, @UploadedFile() file: Express.Multer.File) {
-        return await this.authService.SignUp(payload)
+    async SignUp(@Body() payload:CreateCustomer, @UploadedFile() file: Express.Multer.File) {
+         return await this.authService.SignUp(payload)
     }
 
     @Post('/login')
     async Login(@Body() body: Ilogin) {
-        return await this.authService
+        // return await this.authService
     }
 
 

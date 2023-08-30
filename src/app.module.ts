@@ -13,15 +13,29 @@ import { CartModule } from './app/cart/cart.module';
 import { CouponModule } from './app/coupon/coupon.module';
 import { CloudinaryModule } from './app/cloudinary/cloudinary.module';
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { DbOptions } from './app/common/utils/constants';
+import { Customer } from './app/customer/entities/customer.entity';
+import { Order } from './app/orders/entities/order.entity';
+import { Product } from './app/product/entities/product.entity';
 
 
 @Module({
   imports: [AuthModule, ProductModule, CustomerModule, OrdersModule, ConfigModule.forRoot({
     load: [configuration],
     isGlobal: true
-  }), TypeOrmModule.forRoot(DbOptions), CartModule, CouponModule, CloudinaryModule],
+  }), TypeOrmModule.forRootAsync({
+    useFactory: () => {
+      const config = configuration()
+      return {
+        type: 'postgres',
+        url: config.POSTGRES_URL,
+        autoLoadEntities: true,
+        synchronize: true,
+        host: 'localhost',
+        entities:[Customer,Order,Product]
+      }
+    }
+  }), CartModule, CouponModule, CloudinaryModule],
   controllers: [AppController],
   providers: [AppService, CartService],
 })
-export class AppModule { }
+export class AppModule {}

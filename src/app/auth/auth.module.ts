@@ -7,9 +7,19 @@ import { Customer } from '../customer/entities/customer.entity';
 import { DatabaseModule } from '../database/database.module';
 import { CustomerProvider } from '../customer/customer.provider';
 import { CustomerModule } from '../customer/customer.module';
+import { JwtModule } from '@nestjs/jwt';
+import configuration from '../common/config/config';
+
+const config = configuration()
 
 @Module({
-  imports: [CloudinaryModule, CustomerModule,TypeOrmModule.forFeature([Customer])],
+  imports: [CloudinaryModule, CustomerModule, TypeOrmModule.forFeature([Customer]), JwtModule.register({
+    global: true,
+    secret: config.JWT_SECRET,
+    signOptions: {
+      expiresIn: '20d'
+    }
+  })],
   controllers: [AuthController],
   providers: [AuthService]
 })
