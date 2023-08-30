@@ -9,6 +9,7 @@ import { CustomerProvider } from '../customer/customer.provider';
 import { CustomerModule } from '../customer/customer.module';
 import { JwtModule } from '@nestjs/jwt';
 import configuration from '../common/config/config';
+import { PassportModule } from '@nestjs/passport';
 
 const config = configuration()
 
@@ -19,7 +20,7 @@ const config = configuration()
     signOptions: {
       expiresIn: '20d'
     }
-  })],
+  }),PassportModule],
   controllers: [AuthController],
   providers: [AuthService]
 })

@@ -1,17 +1,18 @@
-import { Injectable, HttpException, BadRequestException } from '@nestjs/common';
+import { Injectable, HttpException, BadRequestException, ConflictException } from '@nestjs/common';
 import { CreateCustomer } from '../customer/dto/create-customer.dto';
-import { Ilogin } from './dto/auth.dto';
+import { Ilogin, Ireq } from './dto/auth.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { Customer } from '../customer/entities/customer.entity';
 import { DeepPartial, Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Db_Constants } from '../common/dto/common-dto';
 import { hashpassword } from '../common/utils/functions';
+import { JwtService } from '@nestjs/jwt';
 
 
 @Injectable()
 export class AuthService {
-    constructor(private cloudinaryService: CloudinaryService, @InjectRepository(Customer) private readonly customerRepository: Repository<Customer>) { }
+    constructor(private cloudinaryService: CloudinaryService, @InjectRepository(Customer) private readonly customerRepository: Repository<Customer>, private readonly jwtService: JwtService) { }
     async SignUp(body: CreateCustomer) {
         try {
             const customer = new Customer()
@@ -32,8 +33,11 @@ export class AuthService {
             }
             const hashpass = await hashpassword(body.password)
             body.password = hashpass
+
             const save = await this.customerRepository.save(customer)
+
             return save
+
         } catch (error) {
             console.log(error)
             throw new HttpException(error.response, 400)
@@ -41,6 +45,28 @@ export class AuthService {
     }
 
     async Login(body: Ilogin) {
+        const { email, password } = body
+        try {
+            const customer = await this.customerRepository.findOne({
+                where: [
+                    { email },
+                    { password }
+                ]
+            })
+            if (!customer)
+                throw new ConflictException("Invalid Customer Credentials")
 
+            const signature: Ireq = { userId: customer.id, email: customer.email, firstname: customer.firstname }
+
+            const payload = await this.jwtService.sign(signature)
+
+            customer.token = payload
+
+            await this.customerRepository.save(customer)
+
+            return customer
+        } catch (error) {
+            throw new BadRequestException(error)
+        }
     }
 }

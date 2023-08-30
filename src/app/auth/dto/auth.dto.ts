@@ -7,3 +7,9 @@ export interface Ilogin {
     password: string
 
 }
+
+export class Ireq {
+    userId: string
+    firstname: string
+    email: string
+}
