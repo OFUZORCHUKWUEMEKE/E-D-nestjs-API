@@ -10,6 +10,7 @@ import { CustomerModule } from '../customer/customer.module';
 import { JwtModule } from '@nestjs/jwt';
 import configuration from '../common/config/config';
 import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './strategy/jwt.strategy';
 
 const config = configuration()
 

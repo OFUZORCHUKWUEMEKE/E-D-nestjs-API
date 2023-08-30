@@ -32,6 +32,9 @@ export class Customer extends BaseEntity {
     @Column({ default: CustomerType.REGULAR, enum: CustomerType })
     customertype: CustomerType
 
+    @Column({ default: false })
+    isverified: boolean
+
     @Column({ nullable: true })
     token: string
 
