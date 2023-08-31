@@ -16,6 +16,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { Customer } from './app/customer/entities/customer.entity';
 import { Order } from './app/orders/entities/order.entity';
 import { Product } from './app/product/entities/product.entity';
+import path from 'path';
 
 
 @Module({
@@ -31,7 +32,9 @@ import { Product } from './app/product/entities/product.entity';
         autoLoadEntities: true,
         synchronize: true,
         host: 'localhost',
-        entities:[Customer,Order,Product]
+        entities:[
+           Customer,Product,Order
+        ]
       }
     }
   }), CartModule, CouponModule, CloudinaryModule],

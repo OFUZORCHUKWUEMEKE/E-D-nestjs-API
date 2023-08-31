@@ -8,11 +8,12 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Db_Constants } from '../common/dto/common-dto';
 import { hashpassword } from '../common/utils/functions';
 import { JwtService } from '@nestjs/jwt';
+import { CustomerRepository } from '../customer/customer.repository';
 
 
 @Injectable()
 export class AuthService {
-    constructor(private cloudinaryService: CloudinaryService, @InjectRepository(Customer) private readonly customerRepository: Repository<Customer>, private readonly jwtService: JwtService) { }
+    constructor(private cloudinaryService: CloudinaryService, private readonly jwtService: JwtService, private readonly customerRepository: CustomerRepository) { }
     async SignUp(body: CreateCustomer) {
         try {
             const customer = new Customer()
@@ -43,7 +44,6 @@ export class AuthService {
             throw new HttpException(error.response, 400)
         }
     }
-
     async Login(body: Ilogin) {
         const { email, password } = body
         try {
