@@ -10,5 +10,5 @@ export default () => ({
         api_key: '532972843435996',
         api_secret: "jZW3YcQHBgXQ6998CBwOTDk1tE8"
     }
-})   
+})
 

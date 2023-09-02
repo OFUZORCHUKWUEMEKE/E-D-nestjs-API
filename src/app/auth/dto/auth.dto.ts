@@ -1,9 +1,16 @@
+import { ApiProperty } from "@nestjs/swagger"
 import { IsString } from "class-validator"
 
-export interface Ilogin {
+export class Ilogin {
 
+    @ApiProperty({
+        description:'email'
+    })
     email: string
 
+    @ApiProperty({
+        description:"Password"
+    })
     password: string
 
 }
