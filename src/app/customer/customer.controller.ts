@@ -12,21 +12,9 @@ import { Repository } from 'typeorm';
 export class CustomerController {
   constructor(private readonly customerService: CustomerService, @InjectRepository(Customer) private readonly customerRepository: Repository<Customer>) { }
 
-  @Post()
-  create(@Body() createCustomerDto: CreateCustomer) {
-    return this.customerService.create(createCustomerDto);
-  }
-
-  @Get()
+  @Get('/')
   async findAll() {
-    
-    const save = await this.customerRepository.findOne({
-      where: {
-        firstname: 'emeke'
-      }
-    })
-    console.log(save)
-    return save
+    return await this.customerService.findAll()
   }
 
   @Get(':id')

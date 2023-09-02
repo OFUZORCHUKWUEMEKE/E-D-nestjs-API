@@ -12,7 +12,6 @@ export class Customer extends BaseEntity {
     @Column({ nullable: false })
     lastname: string
 
-
     @Column({ unique: true, nullable: false })
     businessname: string
 
