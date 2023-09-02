@@ -69,4 +69,8 @@ export class AuthService {
             throw new BadRequestException(error)
         }
     }
+
+    async verifyemail(email: string) {
+
+    }
 }

@@ -4,12 +4,12 @@ import { IsString } from "class-validator"
 export class Ilogin {
 
     @ApiProperty({
-        description:'email'
+        description: 'email'
     })
     email: string
 
     @ApiProperty({
-        description:"Password"
+        description: "Password"
     })
     password: string
 
@@ -19,4 +19,8 @@ export class Ireq {
     userId: string
     firstname: string
     email: string
+}
+
+export interface verify{
+    email:string
 }
