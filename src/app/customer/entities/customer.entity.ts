@@ -6,7 +6,6 @@ import { Entity, Column, OneToMany } from "typeorm";
 @Entity('customer')
 export class Customer extends BaseEntity {
 
-
     @Column({ nullable: false })
     firstname: string
 
