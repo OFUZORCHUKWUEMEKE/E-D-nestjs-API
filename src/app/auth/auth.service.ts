@@ -1,4 +1,4 @@
-import { Injectable, HttpException, BadRequestException, ConflictException } from '@nestjs/common';
+import { Injectable, HttpException, BadRequestException, ConflictException, HttpStatus } from '@nestjs/common';
 import { CreateCustomer } from '../customer/dto/create-customer.dto';
 import { Ilogin, Ireq } from './dto/auth.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
@@ -9,6 +9,13 @@ import { Db_Constants } from '../common/dto/common-dto';
 import { hashpassword } from '../common/utils/functions';
 import { JwtService } from '@nestjs/jwt';
 import { CustomerRepository } from '../customer/customer.repository';
+import { GenerateToken, verifyToken } from '../utils/functions';
+import * as jwt from 'jsonwebtoken'
+import { error } from 'console';
+
+class Decode {
+    email: string
+}
 
 
 @Injectable()
@@ -33,9 +40,12 @@ export class AuthService {
                 customer[key] = value
             }
             const hashpass = await hashpassword(body.password)
+            
             body.password = hashpass
 
             const save = await this.customerRepository.save(customer)
+
+            const token = GenerateToken(save.id, save.email)
 
             return save
 
@@ -70,7 +80,19 @@ export class AuthService {
         }
     }
 
-    async verifyemail(email: string) {
-
+    async ActivateAccount(token: string) {
+        try {
+            const payload = await verifyToken(token)
+            if (payload) {
+                throw new HttpException(error, HttpStatus.BAD_REQUEST)
+            }
+            // const user = await this.customerRepository.findOneById(payload.id)
+        } catch (error) {
+            if (error instanceof jwt.TokenExpiredError) {
+                throw new HttpException('Token has Expired', HttpStatus.BAD_REQUEST)
+            } else {
+                throw new HttpException(error, HttpStatus.BAD_REQUEST)
+            }
+        }
     }
 }

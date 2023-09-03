@@ -17,6 +17,9 @@ export class AuthController {
     @HttpCode(HttpStatus.CREATED)
     @UseInterceptors(FileInterceptor('file'))
     async SignUp(@Body() payload: CreateCustomer, @UploadedFile() file: Express.Multer.File) {
+        if(file){
+            payload.profilepicture = file
+        }
         return await this.authService.SignUp(payload)
     }
 
@@ -25,12 +28,9 @@ export class AuthController {
         return await this.authService.Login(body)
     }
 
-    @Post('/verify-email')
-    async VerifyEmail(@Body() email) {
-        return await this.authService.verifyemail(email)
+    @Post('/activate')
+    async ActivateAccount(@Body() email) {
+        return await this.authService.ActivateAccount(email)
     }
-
-
-
 
 }
