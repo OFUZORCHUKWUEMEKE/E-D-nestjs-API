@@ -16,7 +16,12 @@ export enum CustomerType {
     SUPPLIER = 'supplier'
 }
 
-export enum Db_Constants{
+export enum Db_Constants {
     CUSTOMER = 'CUSTOMER_REPOSITORY',
-    DATABASE='DATA_SOURCE'
+    DATABASE = 'DATA_SOURCE'
+}
+
+export enum CustomerStatus {
+    ACTIVE = 'active',
+    INACTIVE = 'inactive'
 }

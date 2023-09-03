@@ -5,13 +5,14 @@ import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { Customer } from '../customer/entities/customer.entity';
 import { DeepPartial, Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
-import { Db_Constants } from '../common/dto/common-dto';
+import { CustomerStatus, Db_Constants } from '../common/dto/common-dto';
 import { hashpassword } from '../common/utils/functions';
 import { JwtService } from '@nestjs/jwt';
 import { CustomerRepository } from '../customer/customer.repository';
 import { GenerateToken, verifyToken } from '../utils/functions';
 import * as jwt from 'jsonwebtoken'
 import { error } from 'console';
+import { ValidationError } from 'class-validator';
 
 class Decode {
     email: string
@@ -40,7 +41,7 @@ export class AuthService {
                 customer[key] = value
             }
             const hashpass = await hashpassword(body.password)
-            
+
             body.password = hashpass
 
             const save = await this.customerRepository.save(customer)
@@ -71,23 +72,30 @@ export class AuthService {
             const payload = await this.jwtService.sign(signature)
 
             customer.token = payload
-
             await this.customerRepository.save(customer)
 
             return customer
         } catch (error) {
+            if (error instanceof ValidationError) {
+                throw new HttpException(error, HttpStatus.BAD_REQUEST)
+            }
             throw new BadRequestException(error)
         }
     }
 
     async ActivateAccount(token: string) {
         try {
-            const payload = await verifyToken(token)
+            const payload: any = await verifyToken(token)
             if (payload) {
                 throw new HttpException(error, HttpStatus.BAD_REQUEST)
             }
-            // const user = await this.customerRepository.findOneById(payload.id)
+            const customer = await this.customerRepository.findOneById(payload.id)
+            if (!customer)
+                throw new ConflictException('User Not Found')
+            customer.activate = CustomerStatus.ACTIVE
         } catch (error) {
+            if (error instanceof jwt.JsonWebTokenError)
+                throw new HttpException('Invalid Token', HttpStatus.BAD_REQUEST)
             if (error instanceof jwt.TokenExpiredError) {
                 throw new HttpException('Token has Expired', HttpStatus.BAD_REQUEST)
             } else {

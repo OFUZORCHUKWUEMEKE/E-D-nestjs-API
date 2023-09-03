@@ -1,5 +1,5 @@
 import { BaseEntity } from "src/app/common/core/entity/base.entity";
-import { CustomerType, DailyLimit, SubscriptionType } from "src/app/common/dto/common-dto";
+import { CustomerStatus, CustomerType, DailyLimit, SubscriptionType } from "src/app/common/dto/common-dto";
 import { Order } from "src/app/orders/entities/order.entity";
 import { Entity, Column, OneToMany } from "typeorm";
 
@@ -30,8 +30,8 @@ export class Customer extends BaseEntity {
     @Column({ default: CustomerType.REGULAR, enum: CustomerType })
     customertype: CustomerType
 
-    @Column({ default: false })
-    isverified: boolean
+    @Column({ default: CustomerStatus.INACTIVE, enum: CustomerStatus })
+    activate: CustomerStatus
 
     @Column({ nullable: true })
     token: string
