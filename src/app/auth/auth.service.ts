@@ -48,6 +48,8 @@ export class AuthService {
 
             const token = GenerateToken(save.id, save.email)
 
+            // sent activation email
+
             return save
 
         } catch (error) {
@@ -67,14 +69,21 @@ export class AuthService {
             if (!customer)
                 throw new ConflictException("Invalid Customer Credentials")
 
-            const signature: Ireq = { userId: customer.id, email: customer.email, firstname: customer.firstname }
+            if (customer.activate === CustomerStatus.INACTIVE) {
+                const token = GenerateToken(customer.id, customer.email)
+                return
+                // send email to activate account
+            } else {
+                const signature: Ireq = { userId: customer.id, email: customer.email, firstname: customer.firstname }
 
-            const payload = await this.jwtService.sign(signature)
+                const payload = await this.jwtService.sign(signature)
 
-            customer.token = payload
-            await this.customerRepository.save(customer)
+                customer.token = payload
+                await this.customerRepository.save(customer)
 
-            return customer
+                return customer
+            }
+
         } catch (error) {
             if (error instanceof ValidationError) {
                 throw new HttpException(error, HttpStatus.BAD_REQUEST)
@@ -102,5 +111,28 @@ export class AuthService {
                 throw new HttpException(error, HttpStatus.BAD_REQUEST)
             }
         }
+    }
+
+    async Forgotpassword(email: string) {
+        try {
+            const customer = await this.customerRepository.findOne({
+                where: {
+                    email: email
+                }
+            })
+            if (!customer) {
+                throw new ConflictException('Customer Not Found')
+            }
+            const token = GenerateToken(customer.id, customer.email)
+
+            // send email with a token linked to it
+
+        } catch (error) {
+            throw new BadRequestException(error)
+        }
+    }
+
+    async ChangePassword(newpassword:string){
+        
     }
 }
