@@ -8,6 +8,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Customer } from '../customer/entities/customer.entity';
 import { DeepPartial } from 'typeorm'
 import { AuthGuard } from './guard/auth.gaurd';
+import { Auth } from './decorators/jwt.decorator';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -38,7 +39,7 @@ export class AuthController {
         return this.authService.Forgotpassword(email)
     }
 
-    @UseGuards(AuthGuard)
+    @Auth('jwt')
     async ChangePassword(@Body() newpassword:string){
          return await this.authService.ChangePassword(newpassword)
     }

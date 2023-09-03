@@ -95,7 +95,7 @@ export class AuthService {
     async ActivateAccount(token: string) {
         try {
             const payload: any = await verifyToken(token)
-            if (payload) {
+            if (!payload) {
                 throw new HttpException(error, HttpStatus.BAD_REQUEST)
             }
             const customer = await this.customerRepository.findOneById(payload.id)
@@ -133,6 +133,10 @@ export class AuthService {
     }
 
     async ChangePassword(newpassword:string){
-        
+        try {
+            
+        } catch (error) {
+            
+        }
     }
 }
