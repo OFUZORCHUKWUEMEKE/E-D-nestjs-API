@@ -1,4 +1,4 @@
-import { Injectable, HttpException, BadRequestException, ConflictException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, BadRequestException, ConflictException, HttpStatus, UnauthorizedException } from '@nestjs/common';
 import { CreateCustomer } from '../customer/dto/create-customer.dto';
 import { Ilogin, Ireq } from './dto/auth.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
@@ -13,6 +13,7 @@ import { GenerateToken, verifyToken } from '../utils/functions';
 import * as jwt from 'jsonwebtoken'
 import { error } from 'console';
 import { ValidationError } from 'class-validator';
+import * as bcrypt from 'bcrypt'
 
 
 @Injectable()
@@ -125,7 +126,8 @@ export class AuthService {
         }
     }
 
-    async Forgotpassword(email: string) {
+    async Forgotpassword(body) {
+        const { email } = body
         try {
             const customer = await this.customerRepository.findOne({
                 where: {
@@ -135,7 +137,9 @@ export class AuthService {
             if (!customer) {
                 throw new ConflictException('Customer Not Found')
             }
-            const token = GenerateToken(customer.id, customer.email)
+            const token = await GenerateToken(customer.id, customer.email)
+
+            // send email with token
 
             return token
 
@@ -144,11 +148,30 @@ export class AuthService {
         }
     }
 
-    async ChangePassword(newpassword: string) {
+    async ChangePassword(body, payload) {
+        const { password } = body
         try {
+            const customer = await this.customerRepository.findOne({
+                where: {
+                    email: payload.email
+                }
+            })
+            if (!customer) {
+                throw new UnauthorizedException()
+            }
+            const unhashOldpasword = comparepassword(password, customer.password)
+            if (unhashOldpasword) {
+                throw new HttpException('ChangePassword to another password , this has been used before', 400)
+            }
+            const newHash = hashpassword(password)
 
+            customer.password = newHash
+
+            await this.customerRepository.save(customer)
+
+            return 'Password successfully Updated'
         } catch (error) {
-
+            throw new HttpException(error,400)
         }
     }
 }

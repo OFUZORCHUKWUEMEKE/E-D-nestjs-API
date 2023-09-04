@@ -1,6 +1,7 @@
 import {
     CanActivate,
     ExecutionContext,
+    ForbiddenException,
     Injectable,
     UnauthorizedException,
 } from '@nestjs/common';
@@ -25,25 +26,20 @@ export class AuthGuard implements CanActivate {
         if (!token) {
             throw new UnauthorizedException();
         }
-        if (roles && roles === 'jwt') {
-            const payload = await verifyToken(token)
-            request['user'] = payload
-            return true
-        } else {
-            try {
-                const payload = await this.jwtService.verifyAsync(
-                    token,
-                    {
-                        secret: config.JWT_SECRET
-                    }
-                );
-                // 💡 We're assigning the payload to the request object here
-                // so that we can access it in our route handlers
-                request['user'] = payload;
-                return true;
-            } catch {
-                throw new UnauthorizedException();
-            }
+
+        try {
+            const payload = await this.jwtService.verifyAsync(
+                token,
+                {
+                    secret: config.JWT_SECRET
+                }
+            );
+            // 💡 We're assigning the payload to the request object here
+            // so that we can access it in our route handlers
+            request['user'] = payload;
+            return true;
+        } catch {
+            throw new UnauthorizedException();
         }
     }
 

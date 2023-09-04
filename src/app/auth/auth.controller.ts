@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UploadedFile, UploadedFiles, UseInterceptors, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UploadedFile, UploadedFiles, UseInterceptors, HttpCode, HttpStatus, UseGuards, Req } from '@nestjs/common';
 // import { CreateCustomer } from './dto/createcustomer.dto';
 import { AuthService } from './auth.service';
 import { CreateCustomer } from '../customer/dto/create-customer.dto';
@@ -8,7 +8,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Customer } from '../customer/entities/customer.entity';
 import { DeepPartial } from 'typeorm'
 import { AuthGuard } from './guard/auth.gaurd';
-import { Auth } from './decorators/jwt.decorator';
+import { Auth, Jwt } from './decorators/jwt.decorator';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -26,6 +26,7 @@ export class AuthController {
     }
 
     @Post('/login')
+    @HttpCode(HttpStatus.ACCEPTED)
     async Login(@Body() body) {
         return await this.authService.Login(body)
         // console.log(body)
@@ -37,14 +38,14 @@ export class AuthController {
         return await this.authService.ActivateAccount(body)
     }
 
-    async ForgetPassword(@Body() email:string){
-        return this.authService.Forgotpassword(email)
+    @Post('/forgot-password')
+    async ForgetPassword(@Body() body) {
+        return this.authService.Forgotpassword(body.email)
     }
 
-    @Auth('jwt')
     @Post("/change-password")
-    async ChangePassword(@Body() newpassword:string){
-         return await this.authService.ChangePassword(newpassword)
+    async ChangePassword(@Body() body,@Jwt() payload) {
+        return await this.authService.ChangePassword(body,payload)
     }
 
 }
