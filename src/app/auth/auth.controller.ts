@@ -7,8 +7,8 @@ import { Ilogin } from './dto/auth.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { Customer } from '../customer/entities/customer.entity';
 import { DeepPartial } from 'typeorm'
-import { AuthGuard } from './guard/auth.gaurd';
-import { Auth, Jwt } from './decorators/jwt.decorator';
+import { AuthGuard } from '../common/guard/auth.gaurd';
+import { Auth, Jwt } from '../common/decorators/jwt.decorator';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -29,12 +29,10 @@ export class AuthController {
     @HttpCode(HttpStatus.ACCEPTED)
     async Login(@Body() body) {
         return await this.authService.Login(body)
-        // console.log(body)
     }
 
     @Post('/activate')
     async ActivateAccount(@Body() body) {
-        // console.log(typeof token)
         return await this.authService.ActivateAccount(body)
     }
 

@@ -5,13 +5,14 @@ import { CustomerRepository } from './customer.repository';
 
 @Injectable()
 export class CustomerService {
-  constructor(private readonly customerRepository: CustomerRepository) { }
+  constructor(private readonly customerRepository: CustomerRepository,) { }
   async findAll() {
-    return await this.customerRepository.findAll({})
+    const customers = await this.customerRepository.findAll()
+    return customers
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} customer`;
+  async findOne(businessname: string) {
+    return await this.customerRepository.getCustomerByBusiness(businessname)
   }
 
   update(id: number, updateCustomerDto: UpdateCustomerDto) {

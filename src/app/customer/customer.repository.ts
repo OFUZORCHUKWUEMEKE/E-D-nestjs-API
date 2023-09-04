@@ -9,4 +9,12 @@ export class CustomerRepository extends BaseAbstractRepostitory<Customer> implem
     constructor(@InjectRepository(Customer) private readonly customerRepository: Repository<Customer>) {
         super(customerRepository)
     }
+
+    async getCustomerByBusiness(businessname: string) {
+        return await this.findOne({
+            where: {
+                businessname
+            }
+        })
+    }
 }

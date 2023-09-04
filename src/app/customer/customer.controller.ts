@@ -13,14 +13,13 @@ export class CustomerController {
   constructor(private readonly customerService: CustomerService, @InjectRepository(Customer) private readonly customerRepository: Repository<Customer>) { }
 
   @Get('/')
-  async findAll() {
-    const customers = await this.customerRepository.find({})
-    // customers.forEach(async (customer) => {
-    //   this.customerRepository.remove(customer)
-    // })
+  async findAll(): Promise<Customer[]> {
+    return await this.customerService.findAll()
+  }
 
-    return customers
-
+  @Get('/:businessname')
+  async FindOne(@Param('businessname') businessname: string) {
+    return this.customerService.findOne(businessname)
   }
 
 
