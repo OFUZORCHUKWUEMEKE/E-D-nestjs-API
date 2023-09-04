@@ -26,13 +26,15 @@ export class AuthController {
     }
 
     @Post('/login')
-    async Login(@Body() body: Ilogin) {
+    async Login(@Body() body) {
         return await this.authService.Login(body)
+        // console.log(body)
     }
 
     @Post('/activate')
-    async ActivateAccount(@Body() email) {
-        return await this.authService.ActivateAccount(email)
+    async ActivateAccount(@Body() body) {
+        // console.log(typeof token)
+        return await this.authService.ActivateAccount(body)
     }
 
     async ForgetPassword(@Body() email:string){
@@ -40,6 +42,7 @@ export class AuthController {
     }
 
     @Auth('jwt')
+    @Post("/change-password")
     async ChangePassword(@Body() newpassword:string){
          return await this.authService.ChangePassword(newpassword)
     }

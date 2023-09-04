@@ -14,21 +14,14 @@ export class CustomerController {
 
   @Get('/')
   async findAll() {
-    return await this.customerService.findAll()
+    const customers = await this.customerRepository.find({})
+    // customers.forEach(async (customer) => {
+    //   this.customerRepository.remove(customer)
+    // })
+
+    return customers
+
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.customerService.findOne(+id);
-  }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCustomerDto: UpdateCustomerDto) {
-    return this.customerService.update(+id, updateCustomerDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.customerService.remove(+id);
-  }
 }
