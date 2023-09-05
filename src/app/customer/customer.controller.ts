@@ -29,5 +29,9 @@ export class CustomerController {
     return this.customerService.updateProfile(req, body)
   }
 
-
+  @UseGuards(AuthGuard)
+  async GetProfile(@Req() req) {
+    return this.customerService.getProfile(req)
+  }
+  
 }

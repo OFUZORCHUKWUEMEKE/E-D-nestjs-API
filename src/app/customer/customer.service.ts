@@ -33,7 +33,13 @@ export class CustomerService {
     return await this.customerRepo.update({ id: payload.userId }, body)
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} customer`;
+  async getProfile(req): Promise<Customer> {
+    const payload: Ireq = req.user
+    const customer = this.customerRepository.findOne({
+      where: {
+        id: payload.userId
+      }
+    })
+    return customer
   }
 }
