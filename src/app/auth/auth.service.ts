@@ -138,9 +138,7 @@ export class AuthService {
                 throw new ConflictException('Customer Not Found')
             }
             const token = await GenerateToken(customer.id, customer.email)
-
             // send email with token
-
             return token
 
         } catch (error) {
