@@ -157,6 +157,12 @@ export class AuthService {
             if (!customer) {
                 throw new UnauthorizedException()
             }
+            const hashPassword = await hashpassword(customer.password)
+
+            if(password === hashPassword){
+                throw new ConflictException('Password already used already')
+            }
+
             const unhashOldpasword = comparepassword(password, customer.password)
             if (unhashOldpasword) {
                 throw new HttpException('ChangePassword to another password , this has been used before', 400)
@@ -169,7 +175,7 @@ export class AuthService {
 
             return 'Password successfully Updated'
         } catch (error) {
-            throw new HttpException(error,400)
+            throw new HttpException(error, 400)
         }
     }
 }
