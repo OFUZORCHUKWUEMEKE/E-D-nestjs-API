@@ -7,18 +7,27 @@ export class Product extends BaseEntity {
     @Column()
     description: string
 
-    @Column()
-    type: ''
+    // @Column()
+    // type: 
 
-    @Column()
+    @Column({ default: false })
     availability: boolean
 
-    @Column()
-    coupon: string
+    @Column({ default: 0, })
+    quantity_per_crate: number
+
+    @OneToMany(() => Order, (order) => order.product)
+    order: Order[]
+}
+
+@Entity('product_type')
+export class ProductType extends BaseEntity {
+    @Column({})
+    name: string
 
     @Column()
-    quantity: number
+    price: number
 
-    @OneToMany(()=>Order,(order)=>order.product)
-    order:Order[]
+    @Column()
+    description: string
 }
