@@ -4,6 +4,7 @@ import { ProductRepository } from './product.repository';
 import { Product } from './entities/product.entity';
 import { CreateProduct } from './dto/create-product';
 import { UpdateProduct } from './dto/update-product';
+import { RolesGuard } from '../common/guard/roles.guard';
 
 @Controller('product')
 export class ProductController {
@@ -22,7 +23,7 @@ export class ProductController {
     async CreateProduct(product: CreateProduct) {
         return await this.productService.createProduct(product)
     }
-
+    
     @Put('/edit-product/:id')
     async EditProduct(@Param('id') id: string, @Body() body: UpdateProduct) {
         await this.productService.editProduct(id, body)
