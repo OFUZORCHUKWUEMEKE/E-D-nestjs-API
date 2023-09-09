@@ -28,12 +28,13 @@ export class ProductService {
             throw new HttpException(error, 400)
         }
     }
+    
     async editProduct(id, body) {
         try {
             const product = this.productRepo.update({ id }, { ...body })
             return product
         } catch (error) {
-             throw new HttpException(error,400)
+            throw new HttpException(error, 400)
         }
     }
 }
