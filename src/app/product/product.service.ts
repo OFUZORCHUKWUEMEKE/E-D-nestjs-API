@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ProductRepository } from './product.repository';
 import { Product } from './entities/product.entity';
+import { CreateProduct } from './dto/create-product';
 
 @Injectable()
 export class ProductService {
@@ -17,7 +18,7 @@ export class ProductService {
         return product
     }
 
-    async createProduct() {
-
+    async createProduct(product) {
+        
     }
 }

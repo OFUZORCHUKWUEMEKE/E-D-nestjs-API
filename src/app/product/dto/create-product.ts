@@ -17,10 +17,10 @@ export class CreateProduct {
     description: string
 
     @ApiProperty({
-        description: ""
+        description: "Number Of Crates available"
     })
     @IsString()
     @IsNotEmpty()
-    quantity_per_crate:number
+    quantity_per_crate: number
 }
 
