@@ -30,7 +30,7 @@ export class CustomerService {
       return await this.customerRepo.update({ id: payload.userId }, body)
     }
 
-    return await this.customerRepo.update({ id: payload.userId }, body)
+    return await this.customerRepo.update({ id: payload.userId }, { ...body })
   }
 
   async getProfile(req): Promise<Customer> {

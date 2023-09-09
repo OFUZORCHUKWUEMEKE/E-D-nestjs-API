@@ -1,8 +1,9 @@
-import { Controller, Get, Param, ParseUUIDPipe, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductRepository } from './product.repository';
 import { Product } from './entities/product.entity';
 import { CreateProduct } from './dto/create-product';
+import { UpdateProduct } from './dto/update-product';
 
 @Controller('product')
 export class ProductController {
@@ -20,5 +21,10 @@ export class ProductController {
     @Post('/')
     async CreateProduct(product: CreateProduct) {
         return await this.productService.createProduct(product)
+    }
+
+    @Put('/edit-product/:id')
+    async EditProduct(@Param('id') id: string, @Body() body: UpdateProduct) {
+        await this.productService.editProduct(id, body)
     }
 }
