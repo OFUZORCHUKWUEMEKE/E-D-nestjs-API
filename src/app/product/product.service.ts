@@ -37,4 +37,14 @@ export class ProductService {
             throw new HttpException(error, 400)
         }
     }
+
+
+    async deleteProduct(id: string) {
+        try {
+            await this.productRepository.Deleteproduct(id)
+            return 'Successfully deleted'
+        } catch (error) {
+           throw new HttpException(error,400)
+        }
+    }
 }

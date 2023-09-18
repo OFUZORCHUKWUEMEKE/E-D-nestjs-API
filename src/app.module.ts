@@ -7,7 +7,6 @@ import { CustomerModule } from './app/customer/customer.module';
 import { OrdersModule } from './app/orders/orders.module';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './app/common/config/config';
-import { DatabaseModule } from './app/database/database.module';
 import { CartService } from './app/cart/cart.service';
 import { CartModule } from './app/cart/cart.module';
 import { CouponModule } from './app/coupon/coupon.module';
@@ -32,8 +31,8 @@ import path from 'path';
         autoLoadEntities: true,
         synchronize: true,
         host: 'localhost',
-        entities:[
-           Customer,Product,Order
+        entities: [
+          Customer, Product, Order
         ]
       }
     }
@@ -41,4 +40,4 @@ import path from 'path';
   controllers: [AppController],
   providers: [AppService, CartService],
 })
-export class AppModule {}
+export class AppModule { }

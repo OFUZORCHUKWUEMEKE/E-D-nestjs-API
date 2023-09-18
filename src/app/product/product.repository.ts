@@ -6,9 +6,12 @@ import { ProductRepositoryInterface } from "./product.interface";
 
 
 export class ProductRepository extends BaseAbstractRepostitory<Product> implements ProductRepositoryInterface {
-    constructor(@InjectRepository(Product) private readonly customerRepository: Repository<Product>){
-        super(customerRepository)
+    constructor(@InjectRepository(Product) private readonly productRepository: Repository<Product>) {
+        super(productRepository)
+    }
+    async Deleteproduct(id: string) {
+        this.productRepository.delete(id)
     }
 
-   
+
 }
