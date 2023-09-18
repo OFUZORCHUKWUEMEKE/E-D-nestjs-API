@@ -25,7 +25,7 @@ export class Customer extends BaseEntity {
     profilepicture: string
 
     @Column({ enum: DailyLimit, default: DailyLimit.BASIC })
-    dailylimit: DailyLimit
+    dailylimit: DailyLimit 
 
     @Column({ default: CustomerType.REGULAR, enum: CustomerType })
     customertype: CustomerType
