@@ -42,8 +42,8 @@ export class AuthController {
     }
 
     @Post("/change-password")
-    async ChangePassword(@Body() body,@Jwt() payload) {
-        return await this.authService.ChangePassword(body,payload)
+    async ChangePassword(@Body() body, @Jwt() payload) {
+        return await this.authService.ChangePassword(body, payload)
     }
 
 }
