@@ -33,5 +33,5 @@ export class CustomerController {
   async GetProfile(@Req() req) {
     return this.customerService.getProfile(req)
   }
-  
+
 }

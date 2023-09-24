@@ -21,6 +21,8 @@ export class ProductController {
         return await this.productService.GetProductById(id)
     }
 
+
+    @Roles(CustomerType.ADMIN)
     @Post('/')
     async CreateProduct(product: CreateProduct) {
         return await this.productService.createProduct(product)
