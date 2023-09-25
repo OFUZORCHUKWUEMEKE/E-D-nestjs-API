@@ -13,7 +13,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { Customer } from './app/customer/entities/customer.entity';
 import { Order } from './app/orders/entities/order.entity';
 import { Product } from './app/product/entities/product.entity';
-import path from 'path';
+import { Wallet } from './app/wallet/wallet.entity';
 
 
 @Module({
@@ -29,13 +29,14 @@ import path from 'path';
         autoLoadEntities: true,
         synchronize: true,
         host: 'localhost',
-        entities: [
-          Customer, Product, Order
-        ]
+        // entities: [
+        //   Customer, Product, Order,Wallet
+        // ]
+        entities:[__dirname + '/**/*.entity{.ts,.js}']
       }
     }
   }),  CouponModule, CloudinaryModule],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

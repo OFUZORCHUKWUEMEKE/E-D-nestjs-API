@@ -1,7 +1,8 @@
 import { BaseEntity } from "src/app/common/core/entity/base.entity";
 import { CustomerStatus, CustomerType, DailyLimit, SubscriptionType } from "src/app/common/dto/common-dto";
 import { Order } from "src/app/orders/entities/order.entity";
-import { Entity, Column, OneToMany } from "typeorm";
+import { Wallet } from "src/app/wallet/wallet.entity";
+import { Entity, Column, OneToMany, JoinColumn, OneToOne } from "typeorm";
 
 @Entity('customer')
 export class Customer extends BaseEntity {
@@ -25,7 +26,7 @@ export class Customer extends BaseEntity {
     profilepicture: string
 
     @Column({ enum: DailyLimit, default: DailyLimit.BASIC })
-    dailylimit: DailyLimit 
+    dailylimit: DailyLimit
 
     @Column({ default: CustomerType.REGULAR, enum: CustomerType })
     customertype: CustomerType
@@ -40,6 +41,11 @@ export class Customer extends BaseEntity {
     subscription: SubscriptionType
 
     @OneToMany(() => Order, (order) => order.customer)
+    @JoinColumn()
     order: Order[]
+
+    @OneToOne(() => Wallet, (wallet) => wallet.customer, { cascade: true })
+    @JoinColumn()
+    wallet: Wallet
 
 }
