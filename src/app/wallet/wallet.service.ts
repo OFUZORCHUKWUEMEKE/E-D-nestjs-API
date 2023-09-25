@@ -5,7 +5,7 @@ import { Wallet } from './wallet.entity';
 @Injectable()
 export class WalletService {
     constructor(private readonly walletRepository: WalletRepository) { }
-    async CreateWallet(payload: Partial<Wallet>) {
-        await this.walletRepository.create(payload)
+    async create(payload: Partial<Wallet>) {
+        return await this.walletRepository.create(payload)
     }
 }

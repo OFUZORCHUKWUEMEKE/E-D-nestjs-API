@@ -9,7 +9,6 @@ export class Wallet extends BaseEntity {
     @OneToOne(() => Customer, customer => customer.wallet)
     customer: Customer
 
-
     @Column({ default: 0 })
     amount: number
 

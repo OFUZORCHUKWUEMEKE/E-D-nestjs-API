@@ -11,17 +11,19 @@ import { JwtModule } from '@nestjs/jwt';
 import configuration from '../common/config/config';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategy/jwt.strategy';
+import { WalletModule } from '../wallet/wallet.module';
+import { Wallet } from '../wallet/wallet.entity';
 
 const config = configuration()
 
 @Module({
-  imports: [CloudinaryModule, CustomerModule, TypeOrmModule.forFeature([Customer]), JwtModule.register({
+  imports: [CloudinaryModule, CustomerModule, TypeOrmModule.forFeature([Customer,Wallet]), JwtModule.register({
     global: true,
     secret: config.JWT_SECRET,
     signOptions: {
       expiresIn: '20d'
     }
-  }),PassportModule],
+  }),PassportModule,WalletModule],
   controllers: [AuthController],
   providers: [AuthService]
 })

@@ -14,11 +14,12 @@ import * as jwt from 'jsonwebtoken'
 import { error } from 'console';
 import { ValidationError } from 'class-validator';
 import * as bcrypt from 'bcrypt'
+import { WalletService } from '../wallet/wallet.service';
 
 
 @Injectable()
 export class AuthService {
-    constructor(private cloudinaryService: CloudinaryService, private readonly jwtService: JwtService, private readonly customerRepository: CustomerRepository) { }
+    constructor(private cloudinaryService: CloudinaryService, private readonly jwtService: JwtService, private readonly customerRepository: CustomerRepository, private walletService: WalletService) { }
     async SignUp(body: CreateCustomer) {
         try {
             const customer = new Customer()
@@ -39,10 +40,16 @@ export class AuthService {
             }
             const hashpass = await hashpassword(body.password)
             customer.password = hashpass
-            const save = await this.customerRepository.save(customer)
-            const token = await GenerateToken(save.id, save.email)
 
-            // sent activation email
+            const token = await GenerateToken(customer.id, customer.email)
+
+            const newWallet = await this.walletService.create({
+                customer: customer, amount: 0
+            })
+
+            customer.wallet = newWallet
+
+            const save = await this.customerRepository.save(customer)
 
             return {
                 token, save
@@ -157,7 +164,7 @@ export class AuthService {
             if (!customer) {
                 throw new UnauthorizedException()
             }
-        
+
             const unhashOldpasword = comparepassword(password, customer.password)
             if (unhashOldpasword) {
                 throw new HttpException('ChangePassword to another password , this has been used before', 400)
