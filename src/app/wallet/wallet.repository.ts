@@ -11,5 +11,4 @@ export class WalletRepository extends BaseAbstractRepostitory<Wallet> implements
         super(walletRepository)
     }
 
-
 }
