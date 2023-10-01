@@ -1,4 +1,11 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
+import { CartService } from './cart.service';
 
 @Controller('cart')
-export class CartController {}
+export class CartController {
+    constructor(private readonly cartService: CartService) { }
+    @Post()
+    async AddToCart(id) {
+        return await this
+    }
+}
