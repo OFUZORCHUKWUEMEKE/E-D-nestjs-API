@@ -6,7 +6,7 @@ import { Customer } from "../customer/entities/customer.entity";
 export class Wallet extends BaseEntity {
 
     @JoinColumn()
-    @OneToOne(() => Customer, customer => customer.id)
+    // @OneToOne(() => Customer, customer => customer.id,{cascade:true})
     customer: Customer
 
     @Column({ default: 0 })

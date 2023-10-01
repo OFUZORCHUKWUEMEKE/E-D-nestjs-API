@@ -44,8 +44,4 @@ export class Customer extends BaseEntity {
     @JoinColumn()
     order: Order[]
 
-    // @OneToOne(() => Wallet, (wallet) => wallet.customer, { cascade: true })
-    // @JoinColumn()
-    // wallet: Wallet
-
 }

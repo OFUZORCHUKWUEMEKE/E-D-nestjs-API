@@ -1,6 +1,7 @@
 import { BaseEntity } from "src/app/common/core/entity/base.entity";
+import { Customer } from "src/app/customer/entities/customer.entity";
 import { Order } from "src/app/orders/entities/order.entity";
-import { Column, Entity, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 
 @Entity('product')
 export class Product extends BaseEntity {
@@ -30,4 +31,16 @@ export class ProductType extends BaseEntity {
 
     @Column()
     description: string
+}
+
+@Entity('cart')
+export class Cart extends BaseEntity {
+    @ManyToOne(() => Product, (product) => product.id, { cascade: true })
+    @JoinColumn()
+    product: Product[]
+// 
+    // @ManyToOne(() => Customer, (customer) => customer.id, { cascade: true })
+    @JoinColumn()
+    customer: Customer
+
 }

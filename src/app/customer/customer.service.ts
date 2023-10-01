@@ -7,6 +7,7 @@ import { Customer } from './entities/customer.entity';
 import { DataSource, Repository } from 'typeorm';
 import { Ireq } from '../auth/dto/auth.dto';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { Product } from '../product/entities/product.entity';
 
 @Injectable()
 export class CustomerService {
@@ -43,7 +44,7 @@ export class CustomerService {
     return customer
   }
 
-  async addToCart(){
-    
+  async addToCart(product: Product) {
+      
   }
 }

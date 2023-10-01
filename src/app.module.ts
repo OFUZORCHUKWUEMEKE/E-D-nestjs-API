@@ -14,6 +14,7 @@ import { Customer } from './app/customer/entities/customer.entity';
 import { Order } from './app/orders/entities/order.entity';
 import { Product } from './app/product/entities/product.entity';
 import { Wallet } from './app/wallet/wallet.entity';
+import { CartModule } from './app/cart/cart.module';
 
 
 @Module({
@@ -35,7 +36,7 @@ import { Wallet } from './app/wallet/wallet.entity';
         entities:[__dirname + '/**/*.entity{.ts,.js}']
       }
     }
-  }),  CouponModule, CloudinaryModule],
+  }),  CouponModule, CloudinaryModule, CartModule],
   controllers: [AppController],
   providers: [AppService],
 })
