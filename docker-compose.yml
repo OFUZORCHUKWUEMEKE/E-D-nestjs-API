@@ -3,6 +3,8 @@ services:
   postgres:
     image: postgres:latest
     restart: unless-stopped
+    stdin_open: true
+    tty: true
     env_file:
       - ./.env
     ports:
@@ -10,7 +12,7 @@ services:
     volumes:
       - /var/lib/postgresql/data  
 
-  nestbackend:
-   build: .   
-   depends_on:
-    - postgres   
+  # nestbackend:
+  #  build: .   
+  #  depends_on:
+  #   - postgres   

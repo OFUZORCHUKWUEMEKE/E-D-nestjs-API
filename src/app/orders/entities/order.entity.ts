@@ -16,6 +16,6 @@ export class Order extends BaseEntity {
     @Column({ enum: OrderStatus, default: OrderStatus.PENDING })
     orderstatus: OrderStatus
 
-    @ManyToOne(() => Customer, (customer) => customer.order)
+    @OneToOne(() => Customer, (customer) => customer.order)
     customer: Customer
 }

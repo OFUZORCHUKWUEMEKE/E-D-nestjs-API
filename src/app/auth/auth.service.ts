@@ -47,8 +47,7 @@ export class AuthService {
                 customer: customer, amount: 0
             })
 
-            customer.wallet = newWallet
-
+            
             const save = await this.customerRepository.save(customer)
 
             return {
