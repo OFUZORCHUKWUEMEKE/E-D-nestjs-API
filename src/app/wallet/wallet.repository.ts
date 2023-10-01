@@ -10,5 +10,4 @@ export class WalletRepository extends BaseAbstractRepostitory<Wallet> implements
     constructor(@InjectRepository(Wallet) private readonly walletRepository: Repository<Wallet>) {
         super(walletRepository)
     }
-
 }
