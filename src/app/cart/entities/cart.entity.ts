@@ -7,9 +7,9 @@ import { CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany } from "type
 export class Cart extends BaseEntity {
     @OneToMany(() => Product, (product) => product.id, { cascade: true })
     @JoinColumn()
-    product: Product[]
+    product: Product[]    
     // 
-    @ManyToOne(() => Customer, (customer) => customer.id, { cascade: true })
+    // @ManyToOne(() => Customer, (customer) => customer.id, { cascade: true })
     @JoinColumn()
     customer: Customer
 
