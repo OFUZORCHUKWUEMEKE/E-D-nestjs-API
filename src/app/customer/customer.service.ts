@@ -42,4 +42,8 @@ export class CustomerService {
     })
     return customer
   }
+
+  async addToCart(){
+    
+  }
 }
