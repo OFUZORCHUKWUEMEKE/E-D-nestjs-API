@@ -15,6 +15,8 @@ import { Order } from './app/orders/entities/order.entity';
 import { Product } from './app/product/entities/product.entity';
 import { Wallet } from './app/wallet/wallet.entity';
 import { CartModule } from './app/cart/cart.module';
+import { RolesGuard } from './app/common/guard/roles.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 
 @Module({
@@ -33,11 +35,14 @@ import { CartModule } from './app/cart/cart.module';
         // entities: [
         //   Customer, Product, Order,Wallet
         // ]
-        entities:[__dirname + '/**/*.entity{.ts,.js}']
+        entities: [__dirname + '/**/*.entity{.ts,.js}']
       }
     }
-  }),  CouponModule, CloudinaryModule, CartModule],
+  }), CouponModule, CloudinaryModule, CartModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, {
+    useClass: RolesGuard,
+    provide: APP_GUARD
+  }],
 })
-export class AppModule {}
+export class AppModule { }

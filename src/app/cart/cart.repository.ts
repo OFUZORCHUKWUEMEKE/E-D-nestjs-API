@@ -9,6 +9,4 @@ export class CartRepository extends BaseAbstractRepostitory<Cart> implements Car
     constructor(@InjectRepository(Cart) private readonly cartRepository: Repository<Cart>) {
         super(cartRepository)
     }
-
-
 }

@@ -6,6 +6,6 @@ export class CartController {
     constructor(private readonly cartService: CartService) { }
     @Post()
     async AddToCart(id) {
-        return await this
+        return await this.cartService
     }
 }
