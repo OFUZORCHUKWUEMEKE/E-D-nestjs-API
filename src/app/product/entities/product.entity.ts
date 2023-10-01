@@ -33,14 +33,3 @@ export class ProductType extends BaseEntity {
     description: string
 }
 
-@Entity('cart')
-export class Cart extends BaseEntity {
-    @ManyToOne(() => Product, (product) => product.id, { cascade: true })
-    @JoinColumn()
-    product: Product[]
-// 
-    // @ManyToOne(() => Customer, (customer) => customer.id, { cascade: true })
-    @JoinColumn()
-    customer: Customer
-
-}

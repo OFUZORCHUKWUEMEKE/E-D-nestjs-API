@@ -45,6 +45,6 @@ export class CustomerService {
   }
 
   async addToCart(product: Product) {
-      
+
   }
 }
