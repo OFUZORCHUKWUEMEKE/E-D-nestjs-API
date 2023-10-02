@@ -1,13 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ProductRepository } from './product.repository';
-import { Product } from './entities/product.entity';
-import { CreateProduct } from './dto/create-product';
+import { Product, ProductType } from './entities/product.entity';
+import { CreateProduct, Product_Type } from './dto/create-product';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class ProductService {
-    constructor(private readonly productRepository: ProductRepository, @InjectRepository(Product) private productRepo: Repository<Product>) { }
+    constructor(private readonly productRepository: ProductRepository, @InjectRepository(Product) private productRepo: Repository<Product>, @InjectRepository(ProductType) private readonly type: Repository<ProductType>) { }
     async GetProducts() {
         await this.productRepository.findAll({})
     }
@@ -20,10 +20,20 @@ export class ProductService {
         return product
     }
 
-    async createProduct(product) {
+    async createProduct(product: CreateProduct) {
         try {
-            const newProduct = await this.productRepository.create(product)
+            const newProduct = await this.productRepository.create({
+
+            })
             return newProduct
+        } catch (error) {
+            throw new HttpException(error, 400)
+        }
+    }
+
+    async createProductType(product: Product_Type) {
+        try {
+            //  const producttype = await this.type.save(product)
         } catch (error) {
             throw new HttpException(error, 400)
         }
@@ -44,7 +54,7 @@ export class ProductService {
             await this.productRepository.Deleteproduct(id)
             return 'Successfully deleted'
         } catch (error) {
-           throw new HttpException(error,400)
+            throw new HttpException(error, 400)
         }
     }
 }

@@ -7,7 +7,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 export class Product extends BaseEntity {
     @Column()
     description: string
-    
+
     @Column({ default: false })
     availability: boolean
 
@@ -28,6 +28,6 @@ export class ProductType extends BaseEntity {
 
     @Column()
     description: string
-    
+
 }
 

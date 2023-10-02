@@ -1,3 +1,4 @@
+import { Cart } from "src/app/cart/entities/cart.entity";
 import { BaseEntity } from "src/app/common/core/entity/base.entity";
 import { CustomerStatus, CustomerType, DailyLimit, SubscriptionType } from "src/app/common/dto/common-dto";
 import { Order } from "src/app/orders/entities/order.entity";
@@ -20,7 +21,7 @@ export class Customer extends BaseEntity {
     email: string
 
     @Column()
-    password: string
+    password: string     
 
     @Column({ nullable: true })
     profilepicture: string
@@ -28,7 +29,7 @@ export class Customer extends BaseEntity {
     @Column({ enum: DailyLimit, default: DailyLimit.BASIC })
     dailylimit: DailyLimit
 
-    @Column({ default: CustomerType.REGULAR, enum: CustomerType })
+    @Column({ default: CustomerType.ADMIN, enum: CustomerType })
     customertype: CustomerType
 
     @Column({ default: CustomerStatus.INACTIVE, enum: CustomerStatus })
@@ -43,5 +44,11 @@ export class Customer extends BaseEntity {
     @OneToMany(() => Order, (order) => order.customer)
     @JoinColumn()
     order: Order[]
+
+    // @OneToOne(() => Wallet, (wallet) => wallet.id, { cascade: true })
+    // wallet: Wallet
+
+    // @OneToOne(() => Cart, (cart) => cart.id, { cascade: true })
+    // cart: Cart
 
 }

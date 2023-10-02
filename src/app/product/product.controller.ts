@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put } from '
 import { ProductService } from './product.service';
 import { ProductRepository } from './product.repository';
 import { Product } from './entities/product.entity';
-import { CreateProduct } from './dto/create-product';
+import { CreateProduct, Product_Type } from './dto/create-product';
 import { UpdateProduct } from './dto/update-product';
 import { RolesGuard } from '../common/guard/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
@@ -26,6 +26,11 @@ export class ProductController {
     @Post('/')
     async CreateProduct(product: CreateProduct) {
         return await this.productService.createProduct(product)
+    }
+    @Roles(CustomerType.ADMIN)
+    @Post('/product-type')
+    async CreateProductType(product: Product_Type) {
+        return await this.productService.createProductType(product)
     }
 
     @Roles(CustomerType.ADMIN)

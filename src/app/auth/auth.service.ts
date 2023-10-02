@@ -44,17 +44,18 @@ export class AuthService {
 
             const token = await GenerateToken(customer.id, customer.email)
 
-            // const newWallet = await this.walletService.create({
-            //     customer: customer, amount: 0
-            // })
+            const newWallet = await this.walletService.create({
+                customer: customer, amount: 0
+            })
+
+            customer.token = token
 
 
-            // const save = await this.customerRepository.save(customer)
+            const save = await this.customerRepository.save(customer)
 
-            // return {
-            //     token, save
-            // }
-            console.log(body.customertype)
+            return {
+                token, save
+            }
 
         } catch (error) {
             console.log(error)

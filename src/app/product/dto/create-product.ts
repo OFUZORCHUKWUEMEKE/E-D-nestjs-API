@@ -24,3 +24,20 @@ export class CreateProduct {
     quantity_per_crate: number
 }
 
+export class Product_Type {
+    @ApiProperty({
+        description: "Name of product"
+    })
+    name: string
+
+    @ApiProperty({
+        description: "Product Price"
+    })
+    price: string
+
+    @ApiProperty({
+        description: "Product Description"
+    })
+    description: string
+}
+
