@@ -18,7 +18,7 @@ export class AuthController {
     @Post('/signup')
     @HttpCode(HttpStatus.CREATED)
     @UseInterceptors(FileInterceptor('file'))
-    async SignUp(@Body() payload: CreateCustomer, @UploadedFile() file: Express.Multer.File) {
+    async SignUp(@Body() payload:CreateCustomer, @UploadedFile() file: Express.Multer.File) {
         if (file) {
             payload.profilepicture = file
         }

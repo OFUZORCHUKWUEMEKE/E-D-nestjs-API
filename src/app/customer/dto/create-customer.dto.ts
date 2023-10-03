@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger'
-import { IsString, IsNotEmpty } from 'class-validator'
+import { IsString, IsNotEmpty, IsOptional } from 'class-validator'
 import { CustomerType, DailyLimit, SubscriptionType } from 'src/app/common/dto/common-dto'
 
 export class CreateCustomer {
@@ -39,5 +39,7 @@ export class CreateCustomer {
     profilepicture: Express.Multer.File
 
     @ApiPropertyOptional()
+    @IsString()
+    @IsOptional()
     customertype: CustomerType
 }
