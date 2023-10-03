@@ -21,7 +21,7 @@ export class Customer extends BaseEntity {
     email: string
 
     @Column()
-    password: string     
+    password: string
 
     @Column({ nullable: true })
     profilepicture: string
@@ -29,7 +29,7 @@ export class Customer extends BaseEntity {
     @Column({ enum: DailyLimit, default: DailyLimit.BASIC })
     dailylimit: DailyLimit
 
-    @Column({ default: CustomerType.ADMIN, enum: CustomerType })
+    @Column({ default: CustomerType.REGULAR, enum: CustomerType })
     customertype: CustomerType
 
     @Column({ default: CustomerStatus.INACTIVE, enum: CustomerStatus })

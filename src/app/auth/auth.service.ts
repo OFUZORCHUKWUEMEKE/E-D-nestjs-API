@@ -22,40 +22,41 @@ export class AuthService {
     constructor(private cloudinaryService: CloudinaryService, private readonly jwtService: JwtService, private readonly customerRepository: CustomerRepository, private walletService: WalletService) { }
     async SignUp(body: CreateCustomer) {
         try {
-            const customer = new Customer()
-            if (body.profilepicture) {
-                const image_url = await this.cloudinaryService.uploadImage(body.profilepicture)
-                body.profilepicture = image_url.url
-            }
-            const isActive = await this.customerRepository.findOne({
-                where: [
-                    { businessname: body.businessname },
-                    { email: body.email }
-                ]
-            })
-            if (isActive)
-                throw new BadRequestException("Customer Already Exists")
-            for (const [key, value] of Object.entries(body)) {
-                customer[key] = value
-            }
-            const hashpass = await hashpassword(body.password)
-            customer.password = hashpass
-            customer.customertype = body.customertype
+            // const customer = new Customer()
+            // if (body.profilepicture) {
+            //     const image_url = await this.cloudinaryService.uploadImage(body.profilepicture)
+            //     body.profilepicture = image_url.url
+            // }
+            // const isActive = await this.customerRepository.findOne({
+            //     where: [
+            //         { businessname: body.businessname },
+            //         { email: body.email }
+            //     ]
+            // })
+            // if (isActive)
+            //     throw new BadRequestException("Customer Already Exists")
+            // for (const [key, value] of Object.entries(body)) {
+            //     customer[key] = value
+            // }
+            // const hashpass = await hashpassword(body.password)
+            // customer.password = hashpass
+            // customer.customertype = body.customertype
 
-            const token = await GenerateToken(customer.id, customer.email)
+            // const token = await GenerateToken(customer.id, customer.email)
 
-            const newWallet = await this.walletService.create({
-                customer: customer, amount: 0
-            })
+            // const newWallet = await this.walletService.create({
+            //     customer: customer, amount: 0
+            // })
 
-            customer.token = token
+            // customer.token = token
 
 
-            const save = await this.customerRepository.save(customer)
+            // const save = await this.customerRepository.save(customer)
 
-            return {
-                token, save
-            }
+            // return {
+            //     token, save
+            // }
+            console.log(body)
 
         } catch (error) {
             console.log(error)
