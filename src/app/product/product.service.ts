@@ -37,11 +37,21 @@ export class ProductService {
                 name: product.name,
                 description: product.description,
                 price: product.price,
-                quantity:product.quantity
+                quantity: product.quantity
             })
+
             return createType
+            // return await this.type.find({})
         } catch (error) {
             throw new HttpException(error.message, 400)
+        }
+    }
+
+    async getProductType(){
+        try {
+            return await this.type.find({})
+        } catch (error) {
+            
         }
     }
 
@@ -53,7 +63,6 @@ export class ProductService {
             throw new HttpException(error, 400)
         }
     }
-
 
     async deleteProduct(id: string) {
         try {

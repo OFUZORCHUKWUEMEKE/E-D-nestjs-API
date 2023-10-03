@@ -13,31 +13,25 @@ const config = configuration()
 export class RolesGuard implements CanActivate {
     constructor(private readonly reflector: Reflector, private jwtService: JwtService, private configService: ConfigService, private customerRepository: CustomerRepository) { }
     async canActivate(context: ExecutionContext): Promise<boolean> {
-
         const roles = this.reflector.get<string[]>('roles', context.getHandler());
-
         if (!roles) {
             return true
         }
-
         const request = context.switchToHttp().getRequest()
-
         const payload = await this.extractTokenfromHeader(request)
-
+        console.log(payload)
         request.user = payload
-
         const customer = await this.customerRepository.findOne({
             where: {
-                id: payload.id
+                id: payload.userId
             }
         })
-
         if (roles.includes(customer.customertype)) {
             return true
         } else {
+            console.log('added successfully')
             return false
         }
-
     }
 
     async extractTokenfromHeader(request: Request) {

@@ -27,6 +27,16 @@ export class ProductController {
     async CreateProduct(product: CreateProduct) {
         return await this.productService.createProduct(product)
     }
+
+    @Get("/product-type")
+    async GetProductType(){
+        try {
+            return await this.productService.getProductType()
+        } catch (error) {
+            // throe new 
+        }
+    }
+
     @Roles(CustomerType.ADMIN)
     @Post('/product-type')
     async CreateProductType(@Body() product: Product_Type) {
