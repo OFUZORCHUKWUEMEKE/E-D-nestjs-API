@@ -14,8 +14,8 @@ export class Product extends BaseEntity {
     @Column({ default: 0, })
     quantity_per_crate: number
 
-    @OneToMany(() => Order, (order) => order.product)
-    order: Order[]
+    // @OneToMany(() => Order, (order) => order.product)
+    // order: Order[]
 }
 
 @Entity('product_type')
@@ -28,6 +28,9 @@ export class ProductType extends BaseEntity {
 
     @Column()
     description: string
+
+    @Column()
+    quantity: number
 
 }
 

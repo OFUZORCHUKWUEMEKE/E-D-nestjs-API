@@ -29,7 +29,7 @@ export class ProductController {
     }
     @Roles(CustomerType.ADMIN)
     @Post('/product-type')
-    async CreateProductType(product: Product_Type) {
+    async CreateProductType(@Body() product: Product_Type) {
         return await this.productService.createProductType(product)
     }
 

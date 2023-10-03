@@ -58,7 +58,6 @@ export class AuthService {
                 token, save
             }
 
-
         } catch (error) {
             console.log(error)
             throw new HttpException(error.response, 400)
@@ -76,8 +75,6 @@ export class AuthService {
             if (!customer)
                 throw new ConflictException("Invalid Customer Credentials")
 
-            console.log({ password, encrypted: customer.password })
-
             const isValidPassword = comparepassword(password, await (customer.password))
 
             if (!isValidPassword)
@@ -85,7 +82,7 @@ export class AuthService {
 
             if (customer.activate === CustomerStatus.INACTIVE) {
                 const token = await GenerateToken(customer.id, customer.email)
-                return token
+                return customer
 
             } else {
                 const signature: Ireq = { userId: customer.id, email: customer.email, firstname: customer.firstname }
@@ -99,10 +96,9 @@ export class AuthService {
             }
 
         } catch (error) {
-            console.log(error)
+            
             if (error instanceof ValidationError) {
                 throw new HttpException(error, HttpStatus.BAD_REQUEST)
-
             }
             console.log(error)
             throw new BadRequestException(error.response)

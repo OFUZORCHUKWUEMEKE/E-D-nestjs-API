@@ -10,7 +10,7 @@ export class Order extends BaseEntity {
     @Column()
     order_id: string
 
-    @OneToMany(() => Product, (product) => product.order)
+    @OneToMany(() => Product, (product) => product.id)
     product: Product[]
 
     @Column({ enum: OrderStatus, default: OrderStatus.PENDING })

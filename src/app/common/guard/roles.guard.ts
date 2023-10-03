@@ -41,7 +41,7 @@ export class RolesGuard implements CanActivate {
     }
 
     async extractTokenfromHeader(request: Request) {
-        const token = request?.headers?.authorization.split(" ")[1]
+        const token = request?.headers?.authorization?.split(" ")[1]
         if (!token) {
             throw new UnauthorizedException()
         }

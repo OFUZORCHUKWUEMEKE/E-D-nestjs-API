@@ -33,9 +33,15 @@ export class ProductService {
 
     async createProductType(product: Product_Type) {
         try {
-            //  const producttype = await this.type.save(product)
+            const createType = await this.type.create({
+                name: product.name,
+                description: product.description,
+                price: product.price,
+                quantity:product.quantity
+            })
+            return createType
         } catch (error) {
-            throw new HttpException(error, 400)
+            throw new HttpException(error.message, 400)
         }
     }
 
