@@ -12,5 +12,4 @@ export class Cart extends BaseEntity {
     @OneToOne(() => Customer, (customer) => customer.id, { cascade: true })
     @JoinColumn()
     customer: Customer
-   
 }    
