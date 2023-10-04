@@ -32,9 +32,6 @@ import { APP_GUARD } from '@nestjs/core';
         autoLoadEntities: true,
         synchronize: true,
         host: 'localhost',
-        // entities: [
-        //   Customer, Product, Order,Wallet
-        // ]
         entities: [__dirname + '/**/*.entity{.ts,.js}']
       }
     }
