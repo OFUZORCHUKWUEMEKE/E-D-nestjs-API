@@ -42,8 +42,10 @@ export class Customer extends BaseEntity {
     subscription: SubscriptionType
 
     @OneToMany(() => Order, (order) => order.customer)
-    @JoinColumn()
     order: Order[]
+
+    @OneToOne(() => Cart, (cart) => cart.customer)
+    cart: Cart
 
     // @OneToOne(() => Wallet, (wallet) => wallet.id, { cascade: true })
     // wallet: Wallet

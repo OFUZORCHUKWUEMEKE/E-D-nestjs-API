@@ -1,4 +1,4 @@
-import { Column, Entity, OneToOne, PrimaryColumn, OneToMany, ManyToOne } from "typeorm";
+import { Column, Entity, OneToOne, PrimaryColumn, OneToMany, ManyToOne, JoinColumn } from "typeorm";
 import { OrderStatus } from "../dto/order-status.enum";
 import { Customer } from "src/app/customer/entities/customer.entity";
 import { BaseEntity } from "src/app/common/core/entity/base.entity";
@@ -17,5 +17,6 @@ export class Order extends BaseEntity {
     orderstatus: OrderStatus
 
     @OneToOne(() => Customer, (customer) => customer.order)
+    @JoinColumn()
     customer: Customer
 }
