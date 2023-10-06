@@ -11,15 +11,19 @@ import { ProductType } from "./entities/producttype.entity";
 export class ProductService {
     constructor(private readonly productRepository: ProductRepository, @InjectRepository(ProductType) private readonly productType: Repository<ProductType>) { }
 
-    async GetProducts() {
+    async GetProducts(): Promise<Product[]> {
         try {
-            return await this.productRepository.findAll({})
+            return await this.productRepository.findAll({
+                relations: {
+                    productType: true
+                }
+            })
         } catch (error) {
             throw new Error()
         }
     }
 
-    async CreateProduct(product: CreateProduct) {
+    async CreateProduct(product: CreateProduct): Promise<Product> {
         const { description, product_type_name, quantity_per_crate } = product
         try {
             const type = await this.productType.findOne({
@@ -39,7 +43,7 @@ export class ProductService {
         }
     }
 
-    async GetProduct() {
+    async GetProduct(): Promise<Product[]> {
         try {
             return this.productRepository.findAll({
                 relations: {
@@ -51,7 +55,7 @@ export class ProductService {
         }
     }
 
-    async GetProducttype() {
+    async GetProducttype(): Promise<ProductType[]> {
         try {
             return await this.productType.find({})
         } catch (error) {
@@ -59,7 +63,7 @@ export class ProductService {
         }
     }
 
-    async CreateProductType(product: Product_Type) {
+    async CreateProductType(product: Product_Type): Promise<ProductType> {
         try {
             return await this.productType.save({
                 name: product.name,
