@@ -1,75 +1,46 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { ProductRepository } from './product.repository';
-import { Product, ProductType } from './entities/product.entity';
-import { CreateProduct, Product_Type } from './dto/create-product';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ConflictException, Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Product} from "./entities/product.entity";
+import { ProductRepository } from "./product.repository";
+import { Repository } from "typeorm";
+import { Product_Type } from "./dto/create-product";
+import { ProductType } from "./entities/producttype.entity";
+
 
 @Injectable()
 export class ProductService {
-    constructor(private readonly productRepository: ProductRepository, @InjectRepository(Product) private productRepo: Repository<Product>, @InjectRepository(ProductType) private readonly type: Repository<ProductType>) { }
+    constructor(private readonly productRepository: ProductRepository, @InjectRepository(ProductType) private readonly productType: Repository<ProductType>) { }
+
     async GetProducts() {
-        await this.productRepository.findAll({})
-    }
-
-    async GetProductById(id: string): Promise<Product> {
-        const product = await this.productRepository.findOneById(id)
-        if (!product) {
-            throw new HttpException('No Products found with such ID', HttpStatus.BAD_REQUEST)
-        }
-        return product
-    }
-
-    async createProduct(product: CreateProduct) {
         try {
-            const newProduct = await this.productRepository.create({
+            return await this.productRepository.findAll({})
+        } catch (error) {
+            throw new Error()
+        }
+    }
 
+    async CreateProduct() {
+
+    }
+
+    async GetProducttype() {
+        try {
+            return await this.productType.find({})
+        } catch (error) {
+            throw new Error()
+        }
+    }
+
+    async CreateProductType(product: Product_Type) {
+        try {
+            return await this.productType.save({
+                name:product.name,
+                description:product.description,
+                price:product.price,
+                quantity:product.quantity
             })
-            return newProduct
         } catch (error) {
-            throw new HttpException(error, 400)
-        }
-    }
-
-    async createProductType(product: Product_Type) {
-        try {
-            const createType = await this.type.create({
-                name: product.name,
-                description: product.description,
-                price: product.price,
-                quantity: product.quantity
-            })
-
-            return createType
-            // return await this.type.find({})
-        } catch (error) {
-            throw new HttpException(error.message, 400)
-        }
-    }
-
-    async getProductType(){
-        try {
-            return await this.type.find({})
-        } catch (error) {
-            
-        }
-    }
-
-    async editProduct(id, body) {
-        try {
-            const product = this.productRepo.update({ id }, { ...body })
-            return product
-        } catch (error) {
-            throw new HttpException(error, 400)
-        }
-    }
-
-    async deleteProduct(id: string) {
-        try {
-            await this.productRepository.Deleteproduct(id)
-            return 'Successfully deleted'
-        } catch (error) {
-            throw new HttpException(error, 400)
+            throw new ConflictException()
         }
     }
 }

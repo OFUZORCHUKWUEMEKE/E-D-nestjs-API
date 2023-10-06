@@ -1,57 +1,37 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common';
-import { ProductService } from './product.service';
-import { ProductRepository } from './product.repository';
-import { Product } from './entities/product.entity';
-import { CreateProduct, Product_Type } from './dto/create-product';
-import { UpdateProduct } from './dto/update-product';
-import { RolesGuard } from '../common/guard/roles.guard';
-import { Roles } from '../common/decorators/roles.decorator';
-import { CustomerType } from '../common/dto/common-dto';
+import { Body, Controller, Get, Post } from "@nestjs/common";
+import { ProductService } from "./product.service";
+import { Product_Type } from "./dto/create-product";
+
+
 
 @Controller('product')
 export class ProductController {
-    constructor(private productService: ProductService, private productRepository: ProductRepository) { }
-    @Get('/')
+    constructor(private readonly productService: ProductService) { }
+
+    @Get()
     async GetProducts() {
-        await this.productService.GetProducts()
-    }
-
-    @Get(':/id')
-    async GetProductById(@Param("id") id): Promise<Product> {
-        return await this.productService.GetProductById(id)
-    }
-
-
-    @Roles(CustomerType.ADMIN)
-    @Post('/')
-    async CreateProduct(product: CreateProduct) {
-        return await this.productService.createProduct(product)
-    }
-
-    @Get("/product-type")
-    async GetProductType(){
         try {
-            return await this.productService.getProductType()
+            return await this.productService.GetProducts()
         } catch (error) {
-            // throe new 
+            throw new Error()
         }
     }
 
-    @Roles(CustomerType.ADMIN)
+    @Get('/product-type')
+    async GetProductTypes() {
+        try {
+            return await this.productService.GetProducttype()
+        } catch (error) {
+            throw new Error()
+        }
+    }
+
     @Post('/product-type')
     async CreateProductType(@Body() product: Product_Type) {
-        return await this.productService.createProductType(product)
-    }
-
-    @Roles(CustomerType.ADMIN)
-    @Put('/edit-product/:id')
-    async EditProduct(@Param('id') id: string, @Body() body: UpdateProduct) {
-        await this.productService.editProduct(id, body)
-    }
-
-    @Roles(CustomerType.ADMIN)
-    @Delete(':id')
-    async DeleteProduct(@Param('id', ParseUUIDPipe) id: string): Promise<string> {
-        return await this.productService.deleteProduct(id)
+        try {
+            return await this.productService.CreateProductType(product)
+        } catch (error) {
+            throw new Error()
+        }
     }
 }

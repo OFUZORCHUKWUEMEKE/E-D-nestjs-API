@@ -1,7 +1,11 @@
 import { BaseEntity } from "src/app/common/core/entity/base.entity";
 import { Customer } from "src/app/customer/entities/customer.entity";
 import { Order } from "src/app/orders/entities/order.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
+import { ProductType } from "./producttype.entity";
+
+
+
 
 @Entity('product')
 export class Product extends BaseEntity {
@@ -14,23 +18,10 @@ export class Product extends BaseEntity {
     @Column({ default: 0, })
     quantity_per_crate: number
 
-    // @OneToMany(() => Order, (order) => order.product)
-    // order: Order[]
+    @OneToOne(() => ProductType)
+    @JoinColumn()
+    productType: ProductType
 }
 
-@Entity('product_type')
-export class ProductType extends BaseEntity {
-    @Column({})
-    name: string
 
-    @Column()
-    price: number
-
-    @Column()
-    description: string
-
-    @Column()
-    quantity: number
-
-}
 
