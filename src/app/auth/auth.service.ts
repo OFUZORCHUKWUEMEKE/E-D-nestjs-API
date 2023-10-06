@@ -52,7 +52,7 @@ export class AuthService {
 
             const save = await this.customerRepository.save(customer)
 
-            console.log(body)
+            console.log(save)
 
             return {
                 token, save
@@ -81,18 +81,24 @@ export class AuthService {
                 throw new ConflictException('Invalid Customer Credentials')
 
             if (customer.activate === CustomerStatus.INACTIVE) {
+
                 const token = await GenerateToken(customer.id, customer.email)
-                return customer
+
+                return {
+                    message:"Activate Your Account Now ",
+                    token
+                }
             } else {
                 const signature: Ireq = { userId: customer.id, email: customer.email, firstname: customer.firstname }
 
                 const payload = await this.jwtService.sign(signature)
+
+                customer.token = payload
             
                 await this.customerRepository.save(customer)
 
                 return {
-                    customer,
-                    token:payload
+                    customer
                 }
             }
 
@@ -119,7 +125,7 @@ export class AuthService {
             }
             const customer = await this.customerRepository.findOneById(payload.id)
             if (!customer)
-                throw new ConflictException('User Not Found')
+                throw new ConflictException('Customer Not Found')
             customer.activate = CustomerStatus.ACTIVE
             await this.customerRepository.save(customer)
             return 'Activated Successfully'

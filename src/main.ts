@@ -4,6 +4,7 @@ import configuration from './app/common/config/config';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { HttpExceptionFilter } from './app/common/core/exceptions/Filters';
+import { ModelExceptionFilter } from './app/common/core/exceptions/model.exception';
 
 const configs = configuration()
 
@@ -14,7 +15,7 @@ async function bootstrap() {
     transform: true,
     whitelist: true
   }))
-  app.useGlobalFilters(new HttpExceptionFilter())
+  app.useGlobalFilters(new HttpExceptionFilter(), new ModelExceptionFilter())
 
   app.useGlobalInterceptors(new ClassSerializerInterceptor(
     app.get(Reflector))
