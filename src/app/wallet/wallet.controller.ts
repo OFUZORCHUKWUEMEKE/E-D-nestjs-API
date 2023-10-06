@@ -1,4 +1,10 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 
 @Controller('wallet')
-export class WalletController {}
+export class WalletController {
+    @Get()
+    async GetWallet(){
+
+    }
+    
+}

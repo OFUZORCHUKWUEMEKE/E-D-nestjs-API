@@ -48,15 +48,17 @@ export class AuthService {
                 customer: customer, amount: 0
             })
 
+            console.log(newWallet)
+
             customer.token = token
 
             const save = await this.customerRepository.save(customer)
 
-            console.log(save)
+            console.log(save)     
 
             return {
                 token, save
-            }
+            }      
 
         } catch (error) {
             console.log(error)

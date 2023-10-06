@@ -6,6 +6,6 @@ import { Wallet } from './wallet.entity';
 export class WalletService {
     constructor(private readonly walletRepository: WalletRepository) { }
     async create(payload: Partial<Wallet>) {
-        return await this.walletRepository.create(payload)
+        return await this.walletRepository.save(payload)
     }
 }
