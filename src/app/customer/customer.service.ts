@@ -13,7 +13,7 @@ import { Product } from '../product/entities/product.entity';
 export class CustomerService {
   constructor(private readonly customerRepository: CustomerRepository, @InjectRepository(Customer) private readonly customerRepo: Repository<Customer>, private readonly cloudinaryService: CloudinaryService) { }
   async findAll() {
-    const customers = await this.customerRepository.findAll()
+    const customers = await this.customerRepository.findAll({})
     return customers
   }
 

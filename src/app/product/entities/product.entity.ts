@@ -12,7 +12,7 @@ export class Product extends BaseEntity {
     @Column()
     description: string
 
-    @Column({ default: false })
+    @Column({ default: true })
     availability: boolean
 
     @Column({ default: 0, })

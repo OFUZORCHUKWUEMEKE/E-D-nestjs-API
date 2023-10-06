@@ -1,6 +1,8 @@
 import { Body, Controller, Get, Post } from "@nestjs/common";
 import { ProductService } from "./product.service";
-import { Product_Type } from "./dto/create-product";
+import { CreateProduct, Product_Type } from "./dto/create-product";
+import { Roles } from "../common/decorators/roles.decorator";
+import { CustomerType } from "../common/dto/common-dto";
 
 
 
@@ -17,6 +19,16 @@ export class ProductController {
         }
     }
 
+    @Roles(CustomerType.ADMIN)
+    @Post('')
+    async CreateProduct(@Body() product: CreateProduct) {
+        try {
+            return await this.productService.CreateProduct(product)
+        } catch (error) {
+            throw new Error('Product Problems')
+        }
+    }
+
     @Get('/product-type')
     async GetProductTypes() {
         try {
@@ -26,6 +38,7 @@ export class ProductController {
         }
     }
 
+    @Roles(CustomerType.ADMIN)
     @Post('/product-type')
     async CreateProductType(@Body() product: Product_Type) {
         try {

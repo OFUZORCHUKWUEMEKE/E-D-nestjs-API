@@ -3,13 +3,6 @@ import { IsNotEmpty, IsNumber, IsString, isString } from "class-validator";
 
 export class CreateProduct {
     @ApiProperty({
-        description: "Name Of Product"
-    })
-    @IsString()
-    @IsNotEmpty()
-    name: string
-
-    @ApiProperty({
         description: "Description of Product"
     })
     @IsString()
@@ -19,9 +12,17 @@ export class CreateProduct {
     @ApiProperty({
         description: "Number Of Crates available"
     })
-    @IsString()
+    @IsNumber()
     @IsNotEmpty()
     quantity_per_crate: number
+
+
+    @ApiProperty({
+        description: "Product Type Name"
+    })
+    @IsString()
+    @IsNotEmpty()
+    product_type_name: string
 }
 
 export class Product_Type {
