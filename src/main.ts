@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import configuration from './app/common/config/config';
 import { ValidationPipe } from '@nestjs/common'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { HttpExceptionFilter } from './app/common/core/exceptions/Filters';
 
 const configs = configuration()
 
@@ -13,6 +14,7 @@ async function bootstrap() {
     transform: true,
     whitelist: true
   }))
+  app.useGlobalFilters(new HttpExceptionFilter())
 
 
   const config = new DocumentBuilder()
