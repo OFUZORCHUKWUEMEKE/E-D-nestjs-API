@@ -83,20 +83,21 @@ export class AuthService {
             if (customer.activate === CustomerStatus.INACTIVE) {
                 const token = await GenerateToken(customer.id, customer.email)
                 return customer
-
             } else {
                 const signature: Ireq = { userId: customer.id, email: customer.email, firstname: customer.firstname }
 
                 const payload = await this.jwtService.sign(signature)
-
-                customer.token = payload
+            
                 await this.customerRepository.save(customer)
 
-                return customer
+                return {
+                    customer,
+                    token:payload
+                }
             }
 
         } catch (error) {
-            
+
             if (error instanceof ValidationError) {
                 throw new HttpException(error, HttpStatus.BAD_REQUEST)
             }

@@ -3,8 +3,10 @@ import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
+import { JsonWebTokenError } from 'jsonwebtoken';
 import configuration from 'src/app/common/config/config';
 import { CustomerRepository } from 'src/app/customer/customer.repository';
+import * as jwt from 'jsonwebtoken'
 
 const config = configuration()
 
@@ -35,11 +37,19 @@ export class RolesGuard implements CanActivate {
     }
 
     async extractTokenfromHeader(request: Request) {
-        const token = request?.headers?.authorization?.split(" ")[1]
-        if (!token) {
-            throw new UnauthorizedException()
+        try {
+            const token = request?.headers?.authorization?.split(" ")[1]
+            if (!token) {
+                throw new UnauthorizedException()
+            }
+
+            const payload = this.jwtService.verifyAsync(token, { secret: config.JWT_SECRET })
+            return payload
+        } catch (error) {
+            if (error instanceof jwt.TokenExpiredError) {
+                return 'Expired Jwt Token'
+            }
         }
-        const payload = this.jwtService.verifyAsync(token, { secret: config.JWT_SECRET })
-        return payload
+
     }
 }

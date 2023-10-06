@@ -1,3 +1,4 @@
+import { Exclude } from "class-transformer";
 import { Cart } from "src/app/cart/entities/cart.entity";
 import { BaseEntity } from "src/app/common/core/entity/base.entity";
 import { CustomerStatus, CustomerType, DailyLimit, SubscriptionType } from "src/app/common/dto/common-dto";
@@ -21,6 +22,7 @@ export class Customer extends BaseEntity {
     email: string
 
     @Column()
+    @Exclude()
     password: string
 
     @Column({ nullable: true })
@@ -36,6 +38,7 @@ export class Customer extends BaseEntity {
     activate: CustomerStatus
 
     @Column({ nullable: true })
+    // @Exclude()
     token: string
 
     @Column({ enum: SubscriptionType, default: SubscriptionType.BASIC })
