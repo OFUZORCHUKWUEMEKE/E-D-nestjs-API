@@ -93,7 +93,24 @@ export class ProductService {
             throw new BadRequestException(error?.response?.message)
         }
     }
-
+    j
+    async DeleteProduct(id: string) {
+        try {
+            const type = await this.productRepository.findOne({
+                where: {
+                    id
+                }
+            })
+            if (!type) throw new ConflictException(`Invalid Product with ${id}`)
+            await this.productRepository.remove(type)
+            return {
+                message: 'Deleted Successfully',
+                succes: true
+            }
+        } catch (error) {
+            throw new BadRequestException(error.response)
+        }
+    }
     async DeleteProductType(id: string) {
         try {
             const type = await this.productType.findOne({
@@ -101,11 +118,27 @@ export class ProductService {
                     id
                 }
             })
-            await this.productType.remove(type)
+            if (!type) throw new ConflictException(`Invalid Product with ${id}`)
+            const datas = await this.productRepository.findAll({
+                relations: {
+                    productType: true
+                },
+                where: {
+                    productType: {
+                        id
+                    }
+                }
+            })
+
+            for (const data of datas) {
+                await this.productRepository.remove(data)
+            }
             return {
-                message: 'Deleted Successfully'
+                message:"Deleted Successfully",
+                success:true
             }
         } catch (error) {
+            console.log(error)
             throw new BadRequestException(error.response)
         }
     }

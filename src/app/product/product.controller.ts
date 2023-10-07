@@ -54,17 +54,27 @@ export class ProductController {
         try {
             return await this.productService.EditProductType(id, body)
         } catch (error) {
-             throw new BadRequestException(error.response.message)
+            throw new BadRequestException(error.response.message)
         }
     }
 
     @Roles(CustomerType.ADMIN)
     @Delete('delete/:id')
-    async DeleteProduct(@Param('id',ParseUUIDPipe) id:string){
+    async DeleteProduct(@Param('id', ParseUUIDPipe) id: string) {
+        try {
+            return await this.productService.DeleteProduct(id)
+        } catch (error) {
+            throw new BadRequestException(error.response)
+        }
+    }
+    @Roles(CustomerType.ADMIN)
+    @Delete('delete/product-type/:id')
+    async DeleteProductType(@Param('id', ParseUUIDPipe) id: string) {
         try {
             return await this.productService.DeleteProductType(id)
         } catch (error) {
-            throw new BadRequestException(error.response.message)
+            throw new BadRequestException(error.response)
         }
     }
+
 }
