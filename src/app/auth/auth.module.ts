@@ -13,17 +13,18 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { WalletModule } from '../wallet/wallet.module';
 import { Wallet } from '../wallet/wallet.entity';
-
+import { CartModule } from '../cart/cart.module';
+     
 const config = configuration()
 
 @Module({
   imports: [CloudinaryModule, CustomerModule, TypeOrmModule.forFeature([Customer,Wallet]), JwtModule.register({
     global: true,
     secret: config.JWT_SECRET,
-    signOptions: {
+    signOptions: {   
       expiresIn: '20d'
     }
-  }),PassportModule,WalletModule],
+  }),PassportModule,WalletModule,CartModule],
   controllers: [AuthController],
   providers: [AuthService]
 })

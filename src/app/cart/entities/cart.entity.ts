@@ -9,7 +9,7 @@ export class Cart extends BaseEntity {
     @JoinColumn()
     product: Product[]    
 
-    @OneToOne(() => Customer, (customer) => customer.id, { cascade: true })
+    @OneToOne(() => Customer, (customer) => customer.cart, { cascade: true })
     @JoinColumn()
     customer: Customer
 }    

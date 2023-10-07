@@ -15,11 +15,12 @@ import { error } from 'console';
 import { ValidationError } from 'class-validator';
 import * as bcrypt from 'bcrypt'
 import { WalletService } from '../wallet/wallet.service';
+import { CartRepository } from '../cart/cart.repository';
 
 
 @Injectable()
 export class AuthService {
-    constructor(private cloudinaryService: CloudinaryService, private readonly jwtService: JwtService, private readonly customerRepository: CustomerRepository, private walletService: WalletService) { }
+    constructor(private cloudinaryService: CloudinaryService, private readonly jwtService: JwtService, private readonly customerRepository: CustomerRepository, private walletService: WalletService, private readonly cartRepository: CartRepository) { }
     async SignUp(body: CreateCustomer) {
         try {
             const customer = new Customer()
@@ -48,17 +49,21 @@ export class AuthService {
                 customer: customer, amount: 0
             })
 
+            const cart = await this.cartRepository.create({
+                customer, product: []
+            })
+
             console.log(newWallet)
 
             customer.token = token
 
             const save = await this.customerRepository.save(customer)
 
-            console.log(save)     
+            console.log(save)
 
             return {
                 token, save
-            }      
+            }
 
         } catch (error) {
             console.log(error)
@@ -87,7 +92,7 @@ export class AuthService {
                 const token = await GenerateToken(customer.id, customer.email)
 
                 return {
-                    message:"Activate Your Account Now ",
+                    message: "Activate Your Account Now ",
                     token
                 }
             } else {
@@ -96,7 +101,7 @@ export class AuthService {
                 const payload = await this.jwtService.sign(signature)
 
                 customer.token = payload
-            
+
                 await this.customerRepository.save(customer)
 
                 return {
