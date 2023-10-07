@@ -15,10 +15,7 @@ export class Product extends BaseEntity {
     @Column({ default: true })
     availability: boolean
 
-    @Column({ default: 0, })
-    quantity_per_crate: number
-
-    @OneToOne(() => ProductType)
+    @OneToOne(() => ProductType,{cascade:true})
     @JoinColumn()
     productType: ProductType
 }

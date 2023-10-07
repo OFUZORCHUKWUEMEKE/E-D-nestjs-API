@@ -1,10 +1,11 @@
-import { ConflictException, Injectable } from "@nestjs/common";
+import { BadRequestException, ConflictException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Product } from "./entities/product.entity";
 import { ProductRepository } from "./product.repository";
 import { Repository } from "typeorm";
 import { CreateProduct, Product_Type } from "./dto/create-product";
 import { ProductType } from "./entities/producttype.entity";
+import { UpdateProduct } from "./dto/update-product";
 
 
 @Injectable()
@@ -24,7 +25,7 @@ export class ProductService {
     }
 
     async CreateProduct(product: CreateProduct): Promise<Product> {
-        const { description, product_type_name, quantity_per_crate } = product
+        const { description, product_type_name } = product
         try {
             const type = await this.productType.findOne({
                 where: {
@@ -35,11 +36,9 @@ export class ProductService {
             return await this.productRepository.save({
                 description,
                 productType: type,
-                quantity_per_crate
             })
         } catch (error) {
-            // console.log(error.response)
-            // throw new Error(error.response.message)
+            throw new BadRequestException(error.response.message)
         }
     }
 
@@ -51,7 +50,7 @@ export class ProductService {
                 }
             })
         } catch (error) {
-            throw new Error(error.response.message)
+            throw new BadRequestException()
         }
     }
 
@@ -59,7 +58,7 @@ export class ProductService {
         try {
             return await this.productType.find({})
         } catch (error) {
-            throw new Error()
+            throw new BadRequestException()
         }
     }
 
@@ -75,4 +74,40 @@ export class ProductService {
             throw new ConflictException()
         }
     }
+
+
+    async EditProductType(id: string, body: UpdateProduct) {
+        try {
+            const productType = await this.productType.findOne({
+                where: {
+                    id
+                }
+            })
+            if (!productType) throw new ConflictException('Product Type NOT Found')
+            await this.productType.update(id, body)
+            return {
+                message: `Product Type ${productType.name} with ${id} has been Updated Successfully Updated`,
+                success: true
+            }
+        } catch (error) {
+            throw new BadRequestException(error?.response?.message)
+        }
+    }
+
+    async DeleteProductType(id: string) {
+        try {
+            const type = await this.productType.findOne({
+                where: {
+                    id
+                }
+            })
+            await this.productType.remove(type)
+            return {
+                message: 'Deleted Successfully'
+            }
+        } catch (error) {
+            throw new BadRequestException(error.response)
+        }
+    }
 }
+

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post } from "@nestjs/common";
 import { ProductService } from "./product.service";
 import { CreateProduct, Product_Type } from "./dto/create-product";
 import { Roles } from "../common/decorators/roles.decorator";
@@ -15,7 +15,7 @@ export class ProductController {
         try {
             return await this.productService.GetProducts()
         } catch (error) {
-            throw new Error()
+            throw new BadRequestException(error.response)
         }
     }
 
@@ -25,7 +25,7 @@ export class ProductController {
         try {
             return await this.productService.CreateProduct(product)
         } catch (error) {
-            throw new Error('Product Problems')
+            throw new BadRequestException(error.response.message)
         }
     }
 
@@ -34,7 +34,7 @@ export class ProductController {
         try {
             return await this.productService.GetProducttype()
         } catch (error) {
-            throw new Error()
+            throw new BadRequestException(error.response.message)
         }
     }
 
@@ -45,6 +45,26 @@ export class ProductController {
             return await this.productService.CreateProductType(product)
         } catch (error) {
             throw new Error()
+        }
+    }
+
+    @Roles(CustomerType.ADMIN)
+    @Patch('/edit-product/:id')
+    async editProductType(@Param('id', ParseUUIDPipe) id: string, @Body() body) {
+        try {
+            return await this.productService.EditProductType(id, body)
+        } catch (error) {
+             throw new BadRequestException(error.response.message)
+        }
+    }
+
+    @Roles(CustomerType.ADMIN)
+    @Delete('delete/:id')
+    async DeleteProduct(@Param('id',ParseUUIDPipe) id:string){
+        try {
+            return await this.productService.DeleteProductType(id)
+        } catch (error) {
+            throw new BadRequestException(error.response.message)
         }
     }
 }

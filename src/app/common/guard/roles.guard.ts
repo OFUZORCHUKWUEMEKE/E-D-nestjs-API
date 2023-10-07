@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common'
+import { BadRequestException, CanActivate, ConflictException, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
@@ -21,17 +21,19 @@ export class RolesGuard implements CanActivate {
         }
         const request = context.switchToHttp().getRequest()
         const payload = await this.extractTokenfromHeader(request)
-        console.log(payload)
+        
         request.user = payload
         const customer = await this.customerRepository.findOne({
             where: {
                 id: payload.userId
             }
         })
+        if (!customer) {
+            throw new UnauthorizedException()
+        }
         if (roles.includes(customer.customertype)) {
             return true
         } else {
-            console.log('added successfully')
             return false
         }
     }
@@ -48,6 +50,9 @@ export class RolesGuard implements CanActivate {
         } catch (error) {
             if (error instanceof jwt.TokenExpiredError) {
                 return 'Expired Jwt Token'
+            }
+            if (error instanceof jwt.JsonWebTokenError) {
+                throw new BadRequestException('A Jwt Errored')
             }
         }
 
