@@ -93,7 +93,7 @@ export class ProductService {
             throw new BadRequestException(error?.response?.message)
         }
     }
-    j
+    
     async DeleteProduct(id: string) {
         try {
             const type = await this.productRepository.findOne({
