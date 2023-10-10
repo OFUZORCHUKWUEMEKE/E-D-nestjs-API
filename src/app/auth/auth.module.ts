@@ -14,6 +14,8 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 import { WalletModule } from '../wallet/wallet.module';
 import { Wallet } from '../wallet/wallet.entity';
 import { CartModule } from '../cart/cart.module';
+
+// docker-compose exec postgres psql -U depot
      
 const config = configuration()
 
