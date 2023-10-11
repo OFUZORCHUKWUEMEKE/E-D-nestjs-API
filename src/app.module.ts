@@ -17,6 +17,7 @@ import { Wallet } from './app/wallet/wallet.entity';
 import { CartModule } from './app/cart/cart.module';
 import { RolesGuard } from './app/common/guard/roles.guard';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { SubscriptionModule } from './app/subscription/subscription.module';
 
 
 @Module({
@@ -35,7 +36,7 @@ import { APP_FILTER, APP_GUARD } from '@nestjs/core';
         entities: [__dirname + '/**/*.entity{.ts,.js}']
       }
     }
-  }), CouponModule, CloudinaryModule, CartModule],
+  }), CouponModule, CloudinaryModule, CartModule, SubscriptionModule],
   controllers: [AppController],
   providers: [AppService, {
     useClass: RolesGuard,

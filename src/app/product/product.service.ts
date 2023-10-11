@@ -20,7 +20,7 @@ export class ProductService {
                 }
             })
         } catch (error) {
-            throw new Error()
+            throw new BadRequestException()
         }
     }
 
