@@ -16,11 +16,12 @@ import { ValidationError } from 'class-validator';
 import * as bcrypt from 'bcrypt'
 import { WalletService } from '../wallet/wallet.service';
 import { CartRepository } from '../cart/cart.repository';
+import { SubscriptionRepository } from '../subscription/subscription.repository';
 
 
 @Injectable()
 export class AuthService {
-    constructor(private cloudinaryService: CloudinaryService, private readonly jwtService: JwtService, private readonly customerRepository: CustomerRepository, private walletService: WalletService, private readonly cartRepository: CartRepository) { }
+    constructor(private cloudinaryService: CloudinaryService, private readonly jwtService: JwtService, private readonly customerRepository: CustomerRepository, private walletService: WalletService, private readonly cartRepository: CartRepository,private readonly subscritionRepository:SubscriptionRepository) { }
     async SignUp(body: CreateCustomer) {
         try {
             const customer = new Customer()
@@ -59,7 +60,9 @@ export class AuthService {
 
             const save = await this.customerRepository.save(customer)
 
-            console.log(save)
+            const newSubscription = this.subscritionRepository.create({
+                customer:customer
+            })
 
             return {
                 token, save

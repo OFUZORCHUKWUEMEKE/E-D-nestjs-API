@@ -14,19 +14,21 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 import { WalletModule } from '../wallet/wallet.module';
 import { Wallet } from '../wallet/wallet.entity';
 import { CartModule } from '../cart/cart.module';
+import { Subscription } from '../subscription/subscription.entity';
+import { SubscriptionModule } from '../subscription/subscription.module';
 
 // docker-compose exec postgres psql -U depot
      
 const config = configuration()
 
 @Module({
-  imports: [CloudinaryModule, CustomerModule, TypeOrmModule.forFeature([Customer,Wallet]), JwtModule.register({
+  imports: [CloudinaryModule, CustomerModule, TypeOrmModule.forFeature([Customer,Wallet,Subscription]), JwtModule.register({
     global: true,
     secret: config.JWT_SECRET,
     signOptions: {   
       expiresIn: '20d'
     }
-  }),PassportModule,WalletModule,CartModule],
+  }),PassportModule,WalletModule,CartModule,SubscriptionModule],
   controllers: [AuthController],
   providers: [AuthService]
 })
